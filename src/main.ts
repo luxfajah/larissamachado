@@ -96,7 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Update dynamic body theme (eliminate side letterboxing bars on wide screens)
     const activeSlide = slides[index];
     if (activeSlide) {
-      const isDark = activeSlide.id === 'slide-01' || activeSlide.id === 'slide-18' || activeSlide.id === 'slide-19';
+      const isDark = activeSlide.id === 'slide-01';
       if (isDark) {
         document.body.style.backgroundColor = '#2E2A6E';
         document.body.classList.add('hud-dark');
