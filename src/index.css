@@ -1,0 +1,2512 @@
+@import url('https://api.fontshare.com/v2/css?f[]=general-sans@200,300,400,500,600,700&f[]=satoshi@300,400,500,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600&display=swap');
+
+/* ==========================================================================
+   DESIGN SYSTEM: Branding Presentation Template (Dra. Larissa Machado)
+   Aesthetic: Quiet Luxury, Editorial, Minimalist, High Negative Space
+   Target Aspect Ratio: 16:9 (1920x1080)
+   Colors: Strictly Neutral (Whites, Off-whites, Grays, Blacks)
+   ========================================================================== */
+
+/* Font & Core CSS Variable Definitions */
+:root {
+  /* Colors (Strictly Neutral to highlight brand designs later) */
+  --color-bg-base: #111111;            /* Viewport backplate */
+  --color-slide-bg: #FAF9F6;          /* Slide canvas (Warm Off-white / Paper) */
+  --color-divider: rgba(0, 0, 0, 0.08); /* Discreet vertical divider */
+  
+  --color-text-primary: #121110;      /* Dark carbon */
+  --color-text-secondary: #4A4844;    /* Muted charcoal */
+  --color-text-muted: #8E8C87;       /* Soft warm gray */
+  --color-border: #E8E6E0;            /* Light line divider */
+  
+  /* Placeholders styling */
+  --placeholder-bg: #F3F1EC;
+  --placeholder-border: #D3D1CB;
+  --placeholder-text: #7C7A74;
+
+  /* Font Families representing two distinct typographies */
+  --font-dir-a-title: 'Canela', 'Cormorant Garamond', serif;
+  --font-dir-a-body: 'Inter', sans-serif;
+  --font-dir-b-title: 'Instrument Serif', serif;
+  --font-dir-b-body: 'IBM Plex Sans', sans-serif;
+  --font-system: 'Inter', sans-serif;
+}
+
+/* ==========================================================================
+   RESET & CORE LAYOUT
+   ========================================================================== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-system);
+  background-color: var(--color-slide-bg);
+  color: var(--color-text-primary);
+  min-height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* 16:9 Presentation Container */
+.presentation-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1920px;
+  height: 1080px;
+  transform: translate(-50%, -50%);
+  background-color: var(--color-slide-bg);
+  box-shadow: none; /* Flat for seamless full screen transition */
+  overflow: hidden;
+  transform-origin: center center;
+}
+
+.presentation-wrapper {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+/* ==========================================================================
+   SLIDE ANIMATIONS & NAVIGATION STATES
+   ========================================================================== */
+.slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), 
+              transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  background-color: var(--color-slide-bg);
+}
+
+/* Active Slide */
+.slide.active {
+  opacity: 1;
+  pointer-events: all;
+  transform: translateX(0) scale(1);
+  z-index: 10;
+}
+
+/* Slide in the past */
+.slide.past {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-40px) scale(0.99);
+  z-index: 1;
+}
+
+/* Slide in the future */
+.slide.future {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(40px) scale(1.01);
+  z-index: 1;
+}
+
+/* Slide Element Entrance Transitions (Keynote/Presentation Style Animations) */
+.slide-content h1,
+.slide-content h2,
+.slide-content h3,
+.slide-content .section-tag,
+.slide-content .brand-tag,
+.slide-content .ab-text-block,
+.slide-content .dna-card,
+.slide-content .territory-card,
+.slide-content .specimen-glass-card,
+.slide-content .palette-pantone-container,
+.slide-content .app-mockup-box,
+.slide-content .app-description,
+.slide-content .instagram-grid {
+  opacity: 0;
+  transform: translateY(15px);
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), 
+              transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.logo-slide-text,
+.logo-comp-text {
+  opacity: 0;
+  transform: translate(-50%, -42%) !important;
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), 
+              transform 0.7s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+/* Entrance Animation Trigger on slide.active */
+.slide.active .slide-content h1,
+.slide.active .slide-content h2,
+.slide.active .slide-content h3,
+.slide.active .slide-content .section-tag,
+.slide.active .slide-content .brand-tag,
+.slide.active .slide-content .ab-text-block,
+.slide.active .slide-content .dna-card,
+.slide.active .slide-content .territory-card,
+.slide.active .slide-content .specimen-glass-card,
+.slide.active .slide-content .palette-pantone-container,
+.slide.active .slide-content .app-mockup-box,
+.slide.active .slide-content .app-description,
+.slide.active .slide-content .instagram-grid {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.slide.active .logo-slide-text,
+.slide.active .logo-comp-text {
+  opacity: 1;
+  transform: translate(-50%, -50%) !important;
+}
+
+/* Staggered Delay for elements to flow elegantly (Cascade Effect) */
+.slide.active .ab-text-block { transition-delay: 0.15s; }
+.slide.active .palette-pantone-container { transition-delay: 0.25s; }
+.slide.active .specimen-glass-card { transition-delay: 0.25s; }
+.slide.active .instagram-grid { transition-delay: 0.25s; }
+.slide.active .app-mockup-box { transition-delay: 0.25s; }
+
+.slide.active .dna-card:nth-child(1) { transition-delay: 0.15s; }
+.slide.active .dna-card:nth-child(2) { transition-delay: 0.25s; }
+.slide.active .dna-card:nth-child(3) { transition-delay: 0.35s; }
+.slide.active .dna-card:nth-child(4) { transition-delay: 0.45s; }
+
+.slide.active .territory-card:nth-child(1) { transition-delay: 0.15s; }
+.slide.active .territory-card:nth-child(2) { transition-delay: 0.25s; }
+.slide.active .territory-card:nth-child(3) { transition-delay: 0.35s; }
+.slide.active .territory-card:nth-child(4) { transition-delay: 0.45s; }
+
+.slide.active .logo-slide-text,
+.slide.active .logo-comp-text { transition-delay: 0.35s; }
+
+/* Generic Inner Slide Layout */
+.slide-content {
+  width: 100%;
+  height: 100%;
+  padding: 60px 100px 130px 100px; /* Adjusted padding to accommodate slightly larger text */
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.section-tag {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  margin-bottom: 30px;
+}
+
+/* ==========================================================================
+   SLIDE 01: CAPA LAYOUT (DUAS MÃOS BRAND COLORS)
+   ========================================================================== */
+.cover-layout {
+  justify-content: flex-end;
+  padding-bottom: 180px;
+}
+
+.cover-eyebrow {
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+  opacity: 0.8;
+}
+
+.cover-title {
+  font-family: var(--font-dir-a-title);
+  font-size: 110px;
+  font-weight: 300;
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  margin-bottom: 12px;
+}
+
+.cover-subtitle {
+  font-family: var(--font-dir-b-body);
+  font-weight: 300;
+  font-size: 32px;
+  letter-spacing: -0.01em;
+  margin-bottom: 8px;
+}
+
+.cover-specialist {
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 48px;
+  opacity: 0.8;
+}
+
+.cover-divider {
+  width: 80px;
+  height: 1px;
+  margin-bottom: 48px;
+}
+
+.cover-footer {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 60px;
+  max-width: 900px;
+}
+
+.cover-meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.meta-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.meta-value {
+  font-size: 15px;
+  font-weight: 400;
+}
+
+/* ==========================================================================
+   SLIDE 02: SUMÁRIO
+   ========================================================================== */
+.index-layout {
+  justify-content: center;
+}
+
+.index-title {
+  font-family: var(--font-dir-a-title);
+  font-size: 52px;
+  font-weight: 300;
+  margin-bottom: 50px;
+  letter-spacing: -0.01em;
+}
+
+.index-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  max-width: 1400px;
+}
+
+.index-column {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.index-item {
+  display: flex;
+  align-items: baseline;
+  gap: 24px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--color-border);
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  border-radius: 4px;
+}
+
+.index-item:hover {
+  background-color: rgba(255, 255, 255, 0.45);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom-color: rgba(0, 0, 0, 0.08);
+  padding-left: 24px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.015);
+}
+
+.index-num {
+  font-family: var(--font-dir-b-title);
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--color-text-muted);
+}
+
+.index-name {
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--color-text-secondary);
+}
+
+.index-item:hover .index-name {
+  color: var(--color-text-primary);
+}
+
+.highlight-item {
+  border-bottom-style: dashed;
+}
+
+.highlight-item .index-name {
+  font-weight: 500;
+}
+
+/* ==========================================================================
+   SLIDE 03 & 04: EDITORIAL NARRATIVE LAYOUT
+   ========================================================================== */
+.editorial-narrative-layout {
+  justify-content: center;
+}
+
+.editorial-main-content {
+  max-width: 1300px;
+  margin: 0 auto;
+}
+
+.editorial-eyebrow-large {
+  font-family: var(--font-dir-a-title);
+  font-size: 46px;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--color-text-muted);
+  margin-bottom: 16px;
+}
+
+.editorial-heading-huge {
+  font-family: var(--font-dir-a-title);
+  font-size: 76px;
+  font-weight: 300;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--color-text-primary);
+  margin-bottom: 48px;
+}
+
+.editorial-heading-medium {
+  font-family: var(--font-dir-a-title);
+  font-size: 66px;
+  font-weight: 300;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: var(--color-text-primary);
+  margin-bottom: 48px;
+}
+
+.editorial-text-columns {
+  column-count: 2;
+  column-gap: 100px;
+  margin-bottom: 48px;
+}
+
+.editorial-text-columns p {
+  font-size: 20px;
+  line-height: 1.7;
+  color: var(--color-text-secondary);
+  margin-bottom: 24px;
+  font-weight: 300;
+}
+
+.editorial-text-columns.columns-two {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 100px;
+  column-count: auto; /* reset column */
+}
+
+.text-col-primary p, .text-col-secondary p {
+  font-size: 20px;
+  line-height: 1.7;
+  color: var(--color-text-secondary);
+  margin-bottom: 24px;
+  font-weight: 300;
+}
+
+.editorial-closing {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid var(--color-border);
+  padding-top: 32px;
+  margin-top: 24px;
+}
+
+.closing-phrase {
+  font-family: var(--font-dir-a-title);
+  font-size: 28px;
+  font-style: italic;
+  color: var(--color-text-primary);
+}
+
+.closing-signature {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+}
+
+/* ==========================================================================
+   SLIDE 05: DNA DA MARCA
+   ========================================================================== */
+.dna-layout {
+  justify-content: center;
+}
+
+.dna-main-title {
+  font-family: var(--font-dir-a-title);
+  font-size: 52px;
+  font-weight: 300;
+  margin-bottom: 60px;
+  letter-spacing: -0.01em;
+}
+
+.dna-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 40px;
+}
+
+.dna-card {
+  border-top: 1px solid var(--color-text-primary);
+  padding-top: 24px;
+  display: flex;
+  flex-direction: column;
+}
+
+.dna-card-eyebrow {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+.dna-card-question {
+  font-family: var(--font-dir-a-title);
+  font-size: 26px;
+  font-weight: 400;
+  line-height: 1.2;
+  color: var(--color-text-primary);
+  margin-bottom: 24px;
+}
+
+.dna-card-answer {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--color-text-secondary);
+  font-weight: 300;
+}
+
+/* ==========================================================================
+   SLIDE 06: PERSONALIDADE LAYOUT
+   ========================================================================== */
+.personality-layout {
+  justify-content: center;
+}
+
+.personality-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 120px;
+  align-items: center;
+}
+
+.personality-title {
+  font-family: var(--font-dir-a-title);
+  font-size: 56px;
+  font-weight: 300;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  margin-bottom: 32px;
+}
+
+.personality-desc p {
+  font-size: 17px;
+  line-height: 1.65;
+  color: var(--color-text-secondary);
+  margin-bottom: 20px;
+  font-weight: 300;
+}
+
+.personality-badge-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 24px;
+}
+
+.personality-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.p-badge {
+  font-size: 16px;
+  font-weight: 400;
+  border: 1px solid var(--color-border);
+  padding: 12px 24px;
+  border-radius: 4px;
+  color: var(--color-text-secondary);
+  background-color: rgba(0, 0, 0, 0.01);
+}
+
+/* ==========================================================================
+   SLIDE 07: TOM DE VOZ
+   ========================================================================== */
+.voice-layout {
+  justify-content: center;
+}
+
+.voice-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 100px;
+}
+
+.voice-title {
+  font-family: var(--font-dir-a-title);
+  font-size: 56px;
+  font-weight: 300;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  margin-bottom: 32px;
+}
+
+.voice-intro-paragraph {
+  font-size: 20px;
+  line-height: 1.65;
+  color: var(--color-text-secondary);
+  font-weight: 300;
+}
+
+.voice-rules-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 24px;
+}
+
+.voice-rule-card {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.rule-bullet {
+  color: var(--color-text-muted);
+  font-size: 18px;
+}
+
+.voice-rule-card p {
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--color-text-secondary);
+}
+
+/* ==========================================================================
+   SLIDE 08: ARQUÉTIPO & SENSAÇÕES
+   ========================================================================== */
+.archetype-layout {
+  justify-content: center;
+}
+
+.archetype-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 100px;
+}
+
+.archetype-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.archetype-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  margin-bottom: 32px;
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: 12px;
+}
+
+.archetype-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.archetype-list li {
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--color-text-secondary);
+  padding-left: 20px;
+  position: relative;
+}
+
+.archetype-list li::before {
+  content: "—";
+  position: absolute;
+  left: 0;
+  color: var(--color-text-muted);
+}
+
+.archetype-list.list-bold li {
+  font-weight: 500;
+  color: var(--color-text-primary);
+}
+
+.archetype-quote-box {
+  margin-top: auto;
+  background-color: rgba(0, 0, 0, 0.015);
+  border-left: 2px solid var(--color-text-primary);
+  padding: 24px 30px;
+}
+
+.archetype-quote-box p {
+  font-family: var(--font-dir-a-title);
+  font-size: 22px;
+  font-style: italic;
+  line-height: 1.5;
+  color: var(--color-text-primary);
+}
+
+/* ==========================================================================
+   SLIDE 09: PERSONA & TERRITÓRIOS
+   ========================================================================== */
+.persona-layout {
+  justify-content: center;
+}
+
+.persona-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 100px;
+  height: 680px;
+}
+
+.persona-details-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.persona-col-title {
+  font-family: var(--font-dir-a-title);
+  font-size: 32px;
+  font-weight: 400;
+  margin-bottom: 24px;
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: 12px;
+}
+
+.persona-intro {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: var(--color-text-primary);
+}
+
+.persona-bullets {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 30px;
+}
+
+.persona-bullets li {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--color-text-secondary);
+  padding-left: 16px;
+  position: relative;
+  font-weight: 300;
+}
+
+.persona-bullets li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--color-text-muted);
+}
+
+.persona-footnote {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--color-text-muted);
+  border-top: 1px solid var(--color-border);
+  padding-top: 20px;
+  margin-top: auto;
+  font-weight: 300;
+}
+
+.persona-territories-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.territory-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
+.territory-card {
+  background-color: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  padding: 16px 20px;
+  border-radius: 6px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.01);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.territory-card:hover {
+  background-color: rgba(255, 255, 255, 0.65);
+  border-color: rgba(0, 0, 0, 0.12);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.02);
+}
+
+.territory-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: 6px;
+}
+
+.territory-desc {
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--color-text-secondary);
+  font-weight: 300;
+}
+
+/* Custom Scrollbar for Territories list */
+.territory-list::-webkit-scrollbar {
+  width: 4px;
+}
+
+.territory-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.territory-list::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 2px;
+}
+
+/* ==========================================================================
+   SPLIT SCREEN GRID (Slides 10 to 13)
+   ========================================================================== */
+.split-layout {
+  display: grid;
+  grid-template-columns: 1fr 1px 1fr;
+  flex-grow: 1;
+  padding-left: 60px;
+  padding-right: 60px;
+}
+
+.split-column {
+  display: flex;
+  flex-direction: column;
+  padding: 0 40px;
+  overflow: hidden;
+}
+
+.split-divider {
+  width: 1px;
+  height: 90%;
+  background-color: var(--color-divider);
+  align-self: center;
+}
+
+/* Headers on each side */
+.column-header {
+  margin-bottom: 40px;
+}
+
+.brand-tag {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  padding: 6px 12px;
+  border: 1px solid var(--color-text-primary);
+  color: var(--color-text-primary);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  border-radius: 3px;
+}
+
+.brand-tag.tag-secondary {
+  border-color: var(--color-text-secondary);
+  color: var(--color-text-secondary);
+}
+
+.column-title {
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+}
+
+.column-body {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.column-body.centered-content {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+/* Typography styles inside columns */
+.font-dir-a {
+  font-family: var(--font-dir-a-body);
+}
+.font-dir-b {
+  font-family: var(--font-dir-b-body);
+}
+
+/* Symmetrical Text blocks on comparisons */
+.ab-text-block {
+  text-align: center;
+  max-width: 520px;
+  margin: 32px auto 0 auto;
+}
+
+.ab-pdf-text {
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--color-text-secondary);
+  letter-spacing: 0.05em;
+}
+
+.ab-pdf-text.text-editorial-small {
+  font-size: 15px;
+  line-height: 1.65;
+  text-align: justify;
+}
+
+/* ==========================================================================
+   PLACEHOLDER SYSTEM FOR IMAGES
+   ========================================================================== */
+.placeholder-image-container {
+  background: rgba(255, 255, 255, 0.45);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px dashed rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.015);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.placeholder-image-container:hover {
+  background-color: rgba(255, 255, 255, 0.7);
+  border-color: rgba(0, 0, 0, 0.18);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.03);
+}
+
+.placeholder-tag {
+  font-family: var(--font-system);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--placeholder-text);
+  text-align: center;
+  line-height: 1.6;
+  text-transform: uppercase;
+}
+
+.desc-small {
+  font-size: 9px;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  opacity: 0.7;
+}
+
+.placeholder-image-container.has-image {
+  border-style: solid;
+  border-color: rgba(0, 0, 0, 0.05);
+  background: #ffffff;
+  padding: 12px;
+}
+
+.placeholder-image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 4px;
+}
+
+/* ==========================================================================
+   SLIDE 10: LOGO PLACEHOLDER
+   ========================================================================== */
+.logo-container {
+  width: 460px;
+  height: 260px;
+}
+
+.logo-display-wrapper {
+  display: flex;
+  gap: 16px;
+  width: 760px;
+  height: 260px;
+}
+
+.logo-display-wrapper.vertical-stack {
+  flex-direction: column;
+  height: 596px;
+  width: 100%;
+  max-width: 760px;
+  gap: 16px;
+}
+
+.logo-clean-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 24px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02);
+}
+
+.logo-display-wrapper.vertical-stack .logo-clean-box {
+  width: 100%;
+  height: 260px;
+  padding: 32px;
+  flex: none;
+}
+
+.brand-logo-clean {
+  max-width: 90%;
+  max-height: 90%;
+  object-fit: contain;
+}
+
+.logo-mockup-box {
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.logo-display-wrapper.vertical-stack .logo-mockup-box {
+  width: 100%;
+  height: 320px;
+  flex: none;
+}
+
+.brand-logo-mockup {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.brand-logo-mockup:hover {
+  transform: scale(1.03);
+}
+
+/* Symmetrical large box for Proposta B */
+.prop-b-large-box {
+  width: 100%;
+  max-width: 760px;
+  height: 596px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02);
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.prop-b-logo-typography {
+  padding: 40px;
+}
+
+/* Slide 13 (Paleta de Cores) Layout Overrides — push swatches to bottom */
+#slide-13 .split-column {
+  justify-content: center;
+  height: 100%;
+}
+
+#slide-13 .column-body {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+#slide-13 .ab-text-block {
+  text-align: left;
+  margin-left: 0;
+  margin-right: 0;
+  max-width: 100%;
+}
+
+#slide-13 .palette-pantone-container {
+  margin-top: auto;
+}
+
+/* Slide 14 (Fontes & Tipografia) Layout Overrides — vertical centering */
+#slide-14 .split-column {
+  justify-content: center;
+  height: 100%;
+}
+
+#slide-14 .column-body {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+#slide-14 .ab-text-block {
+  text-align: left;
+  margin-left: 0;
+  margin-right: 0;
+  max-width: 100%;
+  margin-top: 32px !important;
+}
+
+.palette-pantone-container {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+  width: 100%;
+  height: 480px;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.pantone-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+  transition: flex 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.3s ease, box-shadow 0.3s ease, filter 0.3s ease;
+  cursor: pointer;
+  height: 100%;
+}
+
+.palette-pantone-container:hover .pantone-card {
+  filter: saturate(90%) brightness(95%);
+}
+
+.palette-pantone-container .pantone-card:hover {
+  flex: 1.6;
+  filter: saturate(110%) brightness(102%);
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+}
+
+.pantone-color-block {
+  height: 68%;
+  width: 100%;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.03);
+}
+
+.pantone-details {
+  height: 32%;
+  padding: 16px 14px;
+  background: #ffffff;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.pantone-brand-label {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-weight: 800;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  color: #1a1a1a;
+  margin-bottom: 2px;
+}
+
+.pantone-code {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  color: #333333;
+}
+
+.pantone-name {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+.pantone-usage {
+  font-size: 9.5px;
+  line-height: 1.35;
+  color: var(--color-text-secondary);
+  margin-top: 8px;
+  border-top: 1px solid rgba(0,0,0,0.04);
+  padding-top: 6px;
+  height: 34px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-weight: 300;
+}
+
+/* Neutral Gradients/Grays for Placeholder Colors */
+.placeholder-swatch-a1 { background-color: #F5F3EF; border: 1px solid #DCDAD6; }
+.placeholder-swatch-a2 { background-color: #DED6CB; }
+.placeholder-swatch-a3 { background-color: #727160; }
+.placeholder-swatch-a4 { background-color: #A36D52; }
+.placeholder-swatch-a5 { background-color: #2F3230; }
+
+.placeholder-swatch-b1 { background-color: #FAFAF8; border: 1px solid #DCDAD6; }
+.placeholder-swatch-b2 { background-color: #CFCFC9; }
+.placeholder-swatch-b3 { background-color: #8D9785; }
+.placeholder-swatch-b4 { background-color: #4C6470; }
+.placeholder-swatch-b5 { background-color: #303437; }
+
+.swatch-details {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.swatch-name-text {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.swatch-hex-text {
+  font-family: monospace;
+  font-size: 11px;
+  color: var(--color-text-muted);
+}
+
+.swatch-usage-text {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+}
+
+/* ==========================================================================
+   SLIDE 12: TIPOGRAFIA E HIERARQUIA
+   ========================================================================== */
+.typography-container {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.typo-block {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.typo-label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--color-text-muted);
+}
+
+.typo-title-preview {
+  font-size: 48px;
+  font-weight: 300;
+  color: var(--color-text-primary);
+  line-height: 1;
+}
+
+.typo-body-preview {
+  font-size: 24px;
+  font-weight: 400;
+  color: var(--color-text-primary);
+}
+
+.typo-meta {
+  font-size: 11px;
+  color: var(--color-text-muted);
+}
+
+.typography-specimen-body {
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+  width: 100%;
+}
+
+.typography-specimen-body .ab-text-block {
+  text-align: left !important;
+  max-width: 100% !important;
+  margin: 0 0 20px 0 !important;
+}
+
+.editorial-specimen {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  text-align: left;
+}
+
+.specimen-glass-card {
+  background: rgba(255, 255, 255, 0.45);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 12px;
+  padding: 48px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02), inset 0 1px 0 0 rgba(255, 255, 255, 0.35);
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  width: 100%;
+  height: 540px;
+  transition: all 0.3s ease;
+}
+
+.specimen-glass-card:hover {
+  background: rgba(255, 255, 255, 0.55);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.03);
+}
+
+.font-hero-row {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  padding-bottom: 28px;
+}
+
+.font-giant-glyph {
+  font-size: 200px;
+  line-height: 0.95;
+  font-weight: 300;
+  color: var(--color-text-primary);
+  width: 220px;
+  text-align: center;
+}
+
+.font-hero-details {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-align: left;
+}
+
+.font-role-tag {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+}
+
+.font-name {
+  font-size: 80px;
+  font-weight: 400;
+  color: var(--color-text-primary);
+  margin: 0;
+  line-height: 1;
+}
+
+.font-charset {
+  font-size: 14px;
+  font-family: var(--font-mono);
+  color: var(--color-text-secondary);
+  letter-spacing: 0.12em;
+  opacity: 0.8;
+  margin-top: 8px;
+}
+
+.font-subspecimen-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+}
+
+.font-subspecimen-block {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-align: left;
+}
+
+.font-name-sub {
+  font-size: 36px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: 2px 0 8px 0;
+}
+
+.font-preview {
+  font-size: 24px;
+  line-height: 1.5;
+  color: var(--color-text-secondary);
+  font-weight: 300;
+}
+
+/* Specific Font Rules */
+.spec-cormorant { font-family: 'Cormorant Garamond', serif; }
+.spec-canela { font-family: var(--font-dir-a-title); }
+.spec-inter { font-family: var(--font-dir-a-body); }
+.spec-instrument { font-family: var(--font-dir-b-title); }
+.spec-jakarta { font-family: 'General Sans', sans-serif; }
+.spec-satoshi { font-family: 'Satoshi', sans-serif; }
+.spec-plex { font-family: var(--font-dir-b-body); }
+
+/* ==========================================================================
+   SLIDE 13: INSTAGRAM FEED PREVIEW
+   ========================================================================== */
+.instagram-mockup-box {
+  width: 440px;
+  height: 440px;
+  margin: 0 auto;
+}
+
+/* ==========================================================================
+   SLIDE 14: INTERACTIVE APPLICATIONS LAYOUT
+   ========================================================================== */
+.applications-tabbed-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.applications-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: 20px;
+  margin-bottom: 30px;
+}
+
+.section-tag-inline {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+}
+
+.app-tab-navigation {
+  display: flex;
+  gap: 12px;
+}
+
+.app-tab-btn {
+  background: rgba(255, 255, 255, 0.4);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  color: var(--color-text-secondary);
+  font-family: var(--font-system);
+  font-size: 12px;
+  font-weight: 500;
+  padding: 8px 18px;
+  border-radius: 20px;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.app-tab-btn:hover {
+  background-color: rgba(255, 255, 255, 0.7);
+  border-color: rgba(0, 0, 0, 0.15);
+}
+
+.app-tab-btn.active {
+  background-color: #E8763A; /* Use Orange for active applications tab button */
+  border-color: #E8763A;
+  color: #FAF9F6;
+}
+
+.app-panels-wrapper {
+  flex-grow: 1;
+  position: relative;
+}
+
+.app-panel {
+  display: none;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+
+/* Symmetrical Grid layouts showing A/B */
+.app-panel.active {
+  display: grid;
+}
+
+/* Left application panel column has the vertical divider */
+.app-panel > div:first-child {
+  border-right: 1px solid var(--color-divider);
+  padding-right: 40px;
+}
+
+.app-panel > div:last-child {
+  padding-left: 40px;
+}
+
+.split-column-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.app-side-header {
+  margin-bottom: 24px;
+}
+
+.app-mockup-box {
+  width: 480px;
+  height: 380px;
+  margin-bottom: 24px;
+}
+
+.app-description {
+  text-align: center;
+  max-width: 440px;
+}
+
+.app-description p {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--color-text-secondary);
+}
+
+/* Full Width Single Comparison Panel Layout */
+.app-panel.full-width-panel {
+  display: none;
+  grid-template-columns: 1fr !important;
+  gap: 0 !important;
+  width: 100%;
+  height: 100%;
+}
+
+.app-panel.full-width-panel.active {
+  display: block !important;
+}
+
+.app-panel.full-width-panel > div:first-child {
+  border-right: none !important;
+  padding-right: 0 !important;
+  padding-left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.full-screen-comparison-box {
+  width: 100%;
+  height: 640px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.full-screen-comparison-box img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+/* ==========================================================================
+   HUD CONTROL BAR & NAVIGATION UI
+   ========================================================================== */
+.presentation-hud {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  max-width: 1720px;
+  height: 60px;
+  background-color: rgba(250, 248, 245, 0.65);
+  backdrop-filter: blur(24px) saturate(140%);
+  -webkit-backdrop-filter: blur(24px) saturate(140%);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 30px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05), inset 0 1px 0 0 rgba(255, 255, 255, 0.25);
+  z-index: 1000;
+}
+
+.hud-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.hud-brand {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--color-text-primary);
+}
+
+.hud-divider {
+  color: var(--color-border);
+}
+
+.hud-project {
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  color: var(--color-text-secondary);
+}
+
+.hud-center {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.hud-btn {
+  background: none;
+  border: none;
+  color: var(--color-text-primary);
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.2s ease, opacity 0.2s ease;
+}
+
+.hud-btn:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+.hud-btn[disabled] {
+  opacity: 0.3;
+  cursor: not-allowed;
+  background: none;
+}
+
+.hud-progress-text {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  font-family: monospace;
+}
+
+.hud-right {
+  font-size: 10px;
+  color: var(--color-text-muted);
+}
+
+.hud-keyboard-hints {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.key-cap {
+  background-color: #ffffff;
+  border: 1px solid var(--color-border);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+/* Linear Bottom Progress Bar */
+.hud-progress-container {
+  position: absolute;
+  bottom: 0;
+  left: 30px;
+  right: 30px;
+  height: 2px;
+  background-color: var(--color-border);
+}
+
+.hud-progress-fill {
+  height: 100%;
+  width: 7%; /* Dynamic width updated by JS */
+  background-color: var(--color-text-primary);
+  transition: width 0.4s ease;
+}
+
+/* ==========================================================================
+   DUAS MÃOS BRAND COLORS ON COVER (SLIDE 1) & PERGUNTA FINAL (SLIDE 16)
+   ========================================================================== */
+#slide-01, #slide-18 {
+  background-color: #2E2A6E; /* Signature Deep Blue */
+  color: #FAF9F6;
+}
+
+/* Logo slide background colors */
+#slide-10 {
+  background-color: #f1eee9;
+}
+
+#slide-11 {
+  background-color: #f1eee9;
+}
+
+#slide-12 {
+  background-color: #cfcdca;
+}
+
+#slide-01 .cover-eyebrow {
+  color: #E8763A; /* Signature Orange */
+}
+
+#slide-01 .cover-title {
+  color: #FAF9F6;
+}
+
+#slide-01 .cover-subtitle {
+  color: #E8C4B8; /* Warm Cream */
+}
+
+#slide-01 .cover-specialist {
+  color: #FAF9F6;
+}
+
+#slide-01 .cover-divider {
+  background-color: #E8763A;
+}
+
+#slide-01 .meta-label {
+  color: #9B9EA6;
+}
+
+#slide-01 .meta-value {
+  color: #FAF9F6;
+}
+
+/* ==========================================================================
+   SLIDE 17: COMPARATIVO GERAL (RESUMO VISUAL) STYLING
+   ========================================================================== */
+#slide-17 .split-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 50px;
+  padding: 40px 60px 100px 60px;
+  height: 100%;
+}
+
+#slide-17 .split-column {
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(20px) saturate(130%);
+  -webkit-backdrop-filter: blur(20px) saturate(130%);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 16px;
+  padding: 30px 40px 40px 40px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.015), inset 0 1px 0 0 rgba(255, 255, 255, 0.45);
+  margin-top: 10px;
+  margin-bottom: 10px;
+  height: calc(100% - 20px);
+}
+
+#slide-17 .split-divider {
+  display: none;
+}
+
+.visual-summary-title {
+  font-size: 52px;
+  line-height: 1.1;
+  color: var(--color-text-primary);
+  margin-top: 10px;
+}
+
+.spec-jakarta-title {
+  font-family: var(--font-dir-b-body);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+}
+
+.visual-summary-tagline {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  line-height: 1.6;
+  color: var(--color-text-secondary);
+  margin-bottom: 40px;
+  text-transform: uppercase;
+}
+
+.visual-summary-colors {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 50px;
+}
+
+.summary-color-spot {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05);
+}
+
+.visual-summary-details {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  border-top: 1px solid var(--color-border);
+  padding-top: 40px;
+}
+
+.summary-detail-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-align: left;
+}
+
+.detail-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+}
+
+.detail-value {
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--color-text-secondary);
+  font-weight: 300;
+}
+
+/* ==========================================================================
+   SLIDE 16: HIGH IMPACT FINAL QUESTION STYLING
+   ========================================================================== */
+.question-layout {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.question-box {
+  text-align: center;
+  max-width: 1400px;
+  padding: 60px;
+}
+
+.italic-serif {
+  font-family: var(--font-dir-a-title);
+  font-style: italic;
+  font-weight: 300;
+}
+
+#slide-16 .question-tag {
+  color: #E8763A; /* Signature Orange */
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  margin-bottom: 40px;
+  display: inline-block;
+}
+
+#slide-16 .question-main-text {
+  font-family: var(--font-dir-a-title);
+  font-size: 88px;
+  font-weight: 300;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: #FAF9F6;
+  margin-bottom: 30px;
+}
+
+#slide-16 .question-caption {
+  font-size: 18px;
+  line-height: 1.6;
+  color: #E8C4B8; /* Warm Cream */
+  max-width: 800px;
+  margin: 0 auto;
+  font-weight: 300;
+  opacity: 0.9;
+}
+
+/* HUD Dark Theme Overrides */
+body.hud-dark .presentation-hud {
+  background-color: rgba(46, 42, 110, 0.65);
+  backdrop-filter: blur(24px) saturate(140%);
+  -webkit-backdrop-filter: blur(24px) saturate(140%);
+  border-color: rgba(232, 118, 58, 0.25);
+  box-shadow: 0 12px 42px rgba(0, 0, 0, 0.25), inset 0 1px 0 0 rgba(255, 255, 255, 0.15);
+  color: #FAF9F6;
+}
+
+body.hud-dark .hud-brand,
+body.hud-dark .hud-project,
+body.hud-dark .hud-progress-text {
+  color: #FAF9F6;
+}
+
+body.hud-dark .hud-btn {
+  color: #FAF9F6;
+}
+
+body.hud-dark .hud-btn:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+body.hud-dark .hud-divider {
+  color: rgba(255, 255, 255, 0.15);
+}
+
+body.hud-dark .hud-progress-fill {
+  background-color: #E8763A; /* Use Duas Mãos Orange for progress bar in dark theme */
+}
+
+body.hud-dark .key-cap {
+  background-color: #2E2A6E;
+  border-color: rgba(255, 255, 255, 0.15);
+  color: #FAF9F6;
+}
+
+/* ==========================================================================
+   LOGO FULLSCREEN LIGHTBOX MODAL
+   ========================================================================== */
+.logo-clean-box {
+  cursor: pointer;
+  transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.25s ease;
+}
+
+.logo-clean-box:hover {
+  transform: scale(1.02);
+  border-color: rgba(0, 0, 0, 0.12);
+}
+
+.logo-lightbox-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(250, 248, 245, 0.96);
+  z-index: 1200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.logo-lightbox-overlay.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.lightbox-close-btn {
+  position: absolute;
+  top: 30px;
+  right: 40px;
+  background: none;
+  border: none;
+  font-size: 48px;
+  font-weight: 200;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: color 0.2s ease, transform 0.2s ease;
+  z-index: 1210;
+  line-height: 1;
+}
+
+.lightbox-close-btn:hover {
+  color: var(--color-text-primary);
+  transform: scale(1.1);
+}
+
+.lightbox-content-container {
+  width: 90vw;
+  height: 85vh;
+  max-width: 1400px;
+  max-height: 900px;
+  border-radius: 12px;
+  border: 1px solid var(--color-border);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 40px;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform: scale(0.95);
+}
+
+.logo-lightbox-overlay.active .lightbox-content-container {
+  transform: scale(1);
+}
+
+.lightbox-content-container img {
+  width: 75%;
+  height: 75%;
+  object-fit: contain;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* Faint almost-imperceptible grid pattern on white background */
+.logo-fullscreen-grid-bg {
+  background-color: #ffffff;
+  background-image: 
+    linear-gradient(to right, rgba(0, 0, 0, 0.02) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.02) 1px, transparent 1px);
+  background-size: 24px 24px;
+  background-position: center;
+}
+
+/* Full bleed layout for fullscreen vector drawings slides */
+.slide-content.full-bleed-layout {
+  padding: 0 !important;
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  overflow: visible !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+}
+
+.full-bleed-slide-img {
+  display: block !important;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/* Logo slide overlays — header top-left and text bottom-center */
+.logo-slide-header {
+  position: absolute;
+  top: 60px;
+  left: 100px;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.logo-slide-tag {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.logo-slide-title {
+  margin: 0;
+  line-height: 1.25;
+}
+
+/* Proposta A — warm tones (cream bg #f1eee9) */
+.logo-header-a .logo-slide-tag { color: #a36d52; }
+.logo-header-a .logo-slide-title { color: #2f2b28; }
+
+/* Proposta B — cool tones (light gray bg #cfcdca) */
+.logo-header-b .logo-slide-tag { color: #4c6470; }
+.logo-header-b .logo-slide-title { color: #1c1e1c; }
+
+/* Comparative header */
+.logo-header-comp .logo-slide-tag { color: #727160; }
+
+/* Justification text block — center glassmorphism card */
+.logo-slide-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  width: 480px;
+  padding: 32px 40px;
+  backdrop-filter: blur(28px) saturate(130%);
+  -webkit-backdrop-filter: blur(28px) saturate(130%);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.06), inset 0 1px 0 0 rgba(255, 255, 255, 0.35);
+  text-align: center;
+}
+
+.logo-slide-text p {
+  font-family: var(--font-ui);
+  font-size: 14px;
+  line-height: 1.65;
+  margin: 0;
+  letter-spacing: 0.01em;
+}
+
+/* Proposta A text card */
+.logo-text-a {
+  background: rgba(241, 238, 233, 0.78);
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  border-radius: 12px;
+}
+.logo-text-a p { color: #2f2b28; }
+
+/* Proposta B text card */
+.logo-text-b {
+  background: rgba(207, 205, 202, 0.78);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 12px;
+}
+.logo-text-b p { color: #1c1e1c; }
+
+/* Comparative floating text block */
+.logo-comp-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  width: 480px;
+  padding: 32px 40px;
+  background: rgba(241, 238, 233, 0.78);
+  backdrop-filter: blur(28px) saturate(130%);
+  -webkit-backdrop-filter: blur(28px) saturate(130%);
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  border-radius: 12px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.06), inset 0 1px 0 0 rgba(255, 255, 255, 0.35);
+  text-align: center;
+}
+
+.logo-comp-label {
+  display: block;
+  font-family: var(--font-ui);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: #727160;
+  margin-bottom: 12px;
+}
+
+.logo-comp-text p {
+  font-family: var(--font-ui);
+  font-size: 14px;
+  line-height: 1.65;
+  color: #2f2b28;
+  margin: 0;
+  letter-spacing: 0.01em;
+}
+
+.logo-comp-text strong {
+  font-weight: 600;
+  color: #1c1e1c;
+}
+
+/* ==========================================================================
+   RESPONSIVE & MOBILE-MODE STYLING
+   ========================================================================== */
+.presentation-container.mobile-mode {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  height: 100dvh !important;
+  transform: none !important;
+}
+
+.presentation-container.mobile-mode .slide-content {
+  padding: 32px 20px 100px 20px !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Mobile Responsive Layout Adaptation (For screen widths <= 1024px or height-restricted) */
+@media (max-width: 1024px), (max-aspect-ratio: 4/3) {
+  /* Layout boxes */
+  .slide-content {
+    padding: 32px 20px 100px 20px !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .split-layout {
+    flex-direction: column !important;
+    gap: 32px !important;
+  }
+  
+  .split-column {
+    width: 100% !important;
+    flex: none !important;
+  }
+  
+  .split-divider {
+    display: none !important;
+  }
+
+  .column-title {
+    font-size: 26px !important;
+  }
+
+  /* Capa */
+  .cover-layout {
+    padding-bottom: 120px !important;
+    justify-content: center !important;
+  }
+
+  .cover-title {
+    font-size: 42px !important;
+  }
+
+  .cover-subtitle {
+    font-size: 16px !important;
+  }
+
+  /* Sumário / Index */
+  .index-container {
+    margin-top: 24px !important;
+    gap: 16px !important;
+  }
+
+  .index-item-title {
+    font-size: 15px !important;
+  }
+
+  .index-item-number {
+    font-size: 11px !important;
+  }
+
+  /* Logo Responsive scaling */
+  .logo-container {
+    width: 100% !important;
+    height: auto !important;
+    aspect-ratio: 16/10 !important;
+    max-width: 460px !important;
+  }
+
+  .logo-display-wrapper.vertical-stack {
+    width: 100% !important;
+    height: auto !important;
+    max-width: 460px !important;
+    gap: 12px !important;
+  }
+
+  .logo-display-wrapper.vertical-stack .logo-clean-box {
+    width: 100% !important;
+    height: 110px !important;
+    padding: 12px !important;
+  }
+
+  .logo-display-wrapper.vertical-stack .logo-mockup-box {
+    width: 100% !important;
+    height: 140px !important;
+  }
+
+  .prop-b-large-box {
+    width: 100% !important;
+    height: 262px !important;
+  }
+
+  /* Grid Layouts (Instagram Grid) */
+  .instagram-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 6px !important;
+    margin-top: 16px !important;
+  }
+
+  .instagram-mockup-box {
+    width: 100% !important;
+    height: auto !important;
+    aspect-ratio: 1 !important;
+  }
+
+  .instagram-mockup-box .placeholder-tag {
+    font-size: 11px !important;
+    padding: 10px !important;
+  }
+
+  /* Pantone Cards (Palette Slide 11) - stacks vertically on mobile */
+  .palette-pantone-container {
+    flex-direction: column !important;
+    gap: 12px !important;
+    height: auto !important;
+    margin-top: 16px !important;
+  }
+
+  .pantone-card {
+    flex-direction: row !important;
+    height: 70px !important;
+    width: 100% !important;
+    border-radius: 8px !important;
+  }
+
+  .pantone-color-block {
+    position: relative !important;
+    width: 70px !important;
+    height: 100% !important;
+    border-radius: 8px 0 0 8px !important;
+  }
+
+  .pantone-details {
+    position: relative !important;
+    margin: 0 !important;
+    border: none !important;
+    background: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    box-shadow: none !important;
+    padding: 10px 16px !important;
+    height: 100% !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .pantone-brand-label {
+    display: none !important;
+  }
+
+  .pantone-code {
+    font-size: 11px !important;
+    margin: 0 !important;
+  }
+
+  .pantone-name {
+    font-size: 13px !important;
+    margin-top: 2px !important;
+  }
+
+  .pantone-usage {
+    display: none !important;
+  }
+
+  /* Editorial Specimen responsive scaling */
+  .editorial-specimen {
+    gap: 16px !important;
+    margin-top: 16px !important;
+  }
+
+  .specimen-glass-card {
+    padding: 16px !important;
+    gap: 16px !important;
+    height: auto !important;
+  }
+
+  .font-hero-row {
+    gap: 16px !important;
+    padding-bottom: 12px !important;
+  }
+
+  .font-giant-glyph {
+    font-size: 54px !important;
+    width: 60px !important;
+  }
+
+  .font-name {
+    font-size: 24px !important;
+  }
+
+  .font-subspecimen-row {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+
+  .font-name-sub {
+    font-size: 14px !important;
+  }
+
+  .font-preview {
+    font-size: 11px !important;
+  }
+
+  /* Tabbed Office applications - Slide 14 */
+  .app-tabs {
+    flex-wrap: wrap !important;
+    gap: 6px !important;
+    margin-top: 16px !important;
+  }
+
+  .app-tab-btn {
+    padding: 8px 12px !important;
+    font-size: 11px !important;
+  }
+
+  .app-mockup-card {
+    flex-direction: column !important;
+    height: auto !important;
+    padding: 20px !important;
+    margin-top: 16px !important;
+  }
+
+  .mockup-details {
+    width: 100% !important;
+    padding-right: 0 !important;
+    margin-bottom: 20px !important;
+  }
+
+  .mockup-visual {
+    width: 100% !important;
+    height: 220px !important;
+  }
+
+  .mockup-preview-tag {
+    font-size: 12px !important;
+  }
+
+  /* Comparative split - Slide 15 */
+  .comparative-split {
+    flex-direction: column !important;
+    gap: 20px !important;
+    margin-top: 16px !important;
+  }
+
+  .comparative-column {
+    padding: 24px !important;
+  }
+
+  .comp-header {
+    margin-bottom: 20px !important;
+  }
+
+  .comp-card-title {
+    font-size: 26px !important;
+  }
+
+  .comp-features-list {
+    gap: 12px !important;
+  }
+
+  /* Final Slide 16 */
+  .final-question {
+    font-size: 36px !important;
+    padding: 0 20px !important;
+  }
+
+  .final-subtitle {
+    font-size: 13px !important;
+    padding: 0 20px !important;
+  }
+
+  /* HUD Navigation Bar */
+  .presentation-hud {
+    padding: 12px 16px !important;
+    bottom: 12px !important;
+    left: 12px !important;
+    right: 12px !important;
+    width: calc(100% - 24px) !important;
+    transform: none !important;
+    height: auto !important;
+  }
+
+  .hud-project {
+    display: none !important; /* Hide project title to fit navigation on narrow screens */
+  }
+
+  .hud-progress-container {
+    width: 100px !important;
+  }
+
+  .full-screen-comparison-box {
+    height: auto !important;
+    aspect-ratio: 16 / 9 !important;
+  }
+}
+
+/* Screen Rotation Warning Overlay for Mobile Portrait Devices */
+.rotation-warning-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 999999;
+  background: var(--color-slide-bg);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 40px;
+  color: var(--color-text-primary);
+}
+
+.rotation-icon-wrapper {
+  margin-bottom: 24px;
+  animation: rotateDevice 2.4s ease-in-out infinite;
+}
+
+@keyframes rotateDevice {
+  0% { transform: rotate(0deg); }
+  35% { transform: rotate(-90deg); }
+  65% { transform: rotate(-90deg); }
+  100% { transform: rotate(0deg); }
+}
+
+.rotation-warning-overlay h3 {
+  font-family: var(--font-dir-a-title);
+  font-size: 24px;
+  font-weight: 300;
+  margin: 0 0 12px 0;
+  letter-spacing: 0.05em;
+}
+
+.rotation-warning-overlay p {
+  font-family: var(--font-system);
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+  max-width: 290px;
+  margin: 0;
+}
+
+@media (max-width: 1024px) and (orientation: portrait) {
+  .rotation-warning-overlay {
+    display: flex !important;
+  }
+}
