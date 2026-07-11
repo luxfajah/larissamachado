@@ -96,7 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Update dynamic body theme (eliminate side letterboxing bars on wide screens)
     const activeSlide = slides[index];
     if (activeSlide) {
-      const isDark = activeSlide.id === 'slide-01' || activeSlide.id === 'slide-18';
+      const isDark = activeSlide.id === 'slide-01' || activeSlide.id === 'slide-18' || activeSlide.id === 'slide-19';
       if (isDark) {
         document.body.style.backgroundColor = '#2E2A6E';
         document.body.classList.add('hud-dark');
@@ -345,20 +345,26 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnSelectB = document.getElementById('btn-select-b');
   const successBox = document.getElementById('selection-success-box');
   const btnReset = document.getElementById('btn-reset-selection');
+  const nextStepsContent = document.getElementById('next-steps-slide-content');
 
   const updateSelectionUI = (selectedOption: 'A' | 'B' | null) => {
     if (selectedOption === 'A') {
       btnSelectA?.classList.add('selected');
       btnSelectB?.classList.remove('selected');
       successBox?.classList.add('active');
+      nextStepsContent?.classList.add('direction-a-active');
+      nextStepsContent?.classList.remove('direction-b-active');
     } else if (selectedOption === 'B') {
       btnSelectB?.classList.add('selected');
       btnSelectA?.classList.remove('selected');
       successBox?.classList.add('active');
+      nextStepsContent?.classList.add('direction-b-active');
+      nextStepsContent?.classList.remove('direction-a-active');
     } else {
       btnSelectA?.classList.remove('selected');
       btnSelectB?.classList.remove('selected');
       successBox?.classList.remove('active');
+      nextStepsContent?.classList.remove('direction-a-active', 'direction-b-active');
     }
   };
 
@@ -372,12 +378,18 @@ document.addEventListener('DOMContentLoaded', () => {
     e.stopPropagation();
     localStorage.setItem('dra_larissa_brand_selection', 'A');
     updateSelectionUI('A');
+    setTimeout(() => {
+      goToSlide(18); // slide 19 is index 18
+    }, 1500);
   });
 
   btnSelectB?.addEventListener('click', (e) => {
     e.stopPropagation();
     localStorage.setItem('dra_larissa_brand_selection', 'B');
     updateSelectionUI('B');
+    setTimeout(() => {
+      goToSlide(18); // slide 19 is index 18
+    }, 1500);
   });
 
   btnReset?.addEventListener('click', (e) => {
