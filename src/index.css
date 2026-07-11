@@ -2165,8 +2165,7 @@ body.hud-dark .key-cap {
   -webkit-overflow-scrolling: touch;
 }
 
-/* Mobile Responsive Layout Adaptation (For screen widths <= 1024px or height-restricted) */
-@media (max-width: 1024px), (max-aspect-ratio: 4/3) {
+@media (max-width: 1024px) and (orientation: portrait) {
   /* Layout boxes */
   .slide-content {
     padding: 32px 20px 100px 20px !important;
