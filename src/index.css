@@ -1836,6 +1836,28 @@ body {
   max-width: 90%;
 }
 
+.card-preview-image {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 180px;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 24px;
+  border: 1px solid rgba(0, 0, 0, 0.03);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.015);
+  background: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card-preview-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
 /* Pantone swatch strip inside card */
 .card-colors-strip {
   position: relative;
