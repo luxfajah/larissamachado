@@ -343,23 +343,21 @@ document.addEventListener('DOMContentLoaded', () => {
   // Slide 18: Interactive Direction Selection
   const btnSelectA = document.getElementById('btn-select-a');
   const btnSelectB = document.getElementById('btn-select-b');
-  const cardOptionA = document.getElementById('option-a-card');
-  const cardOptionB = document.getElementById('option-b-card');
   const successBox = document.getElementById('selection-success-box');
   const btnReset = document.getElementById('btn-reset-selection');
 
   const updateSelectionUI = (selectedOption: 'A' | 'B' | null) => {
     if (selectedOption === 'A') {
-      cardOptionA?.classList.add('selected');
-      cardOptionB?.classList.remove('selected');
+      btnSelectA?.classList.add('selected');
+      btnSelectB?.classList.remove('selected');
       successBox?.classList.add('active');
     } else if (selectedOption === 'B') {
-      cardOptionB?.classList.add('selected');
-      cardOptionA?.classList.remove('selected');
+      btnSelectB?.classList.add('selected');
+      btnSelectA?.classList.remove('selected');
       successBox?.classList.add('active');
     } else {
-      cardOptionA?.classList.remove('selected');
-      cardOptionB?.classList.remove('selected');
+      btnSelectA?.classList.remove('selected');
+      btnSelectB?.classList.remove('selected');
       successBox?.classList.remove('active');
     }
   };
