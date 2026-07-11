@@ -2822,6 +2822,14 @@ body.hud-dark .key-cap {
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
   z-index: 1;
+  opacity: 0;
+  transform: scale(1.04);
+  transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.slide.active .next-steps-grid-bg {
+  opacity: 1;
+  transform: scale(1);
 }
 
 .grid-bg-item {
