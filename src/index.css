@@ -1840,7 +1840,7 @@ body {
   position: relative;
   z-index: 1;
   width: calc(100% + 80px);
-  height: 150px;
+  height: 300px;
   margin-top: -40px;
   margin-left: -40px;
   margin-right: -40px;
