@@ -865,16 +865,80 @@
 
         <!-- ==================== SLIDE 18: PERGUNTA FINAL ==================== -->
         <section class="slide future" id="slide-18">
-          <div class="slide-content question-layout">
-            <div class="question-box">
-              <span class="question-tag">PERGUNTA FUNDAMENTAL</span>
-              <h2 class="question-main-text">
+          <div class="slide-content question-layout-reconstructed">
+            <div class="final-question-header">
+              <span class="final-question-tag">PROCESSO DE CO-CRIAÇÃO</span>
+              <h2 class="final-question-title">
                 Qual dessas <span class="italic-serif">direções</span> representa melhor a <span class="italic-serif">médica</span> que você deseja que seus pacientes encontrem?
               </h2>
-              <p class="question-caption">
-                Esta decisão definirá o posicionamento de marca, conduzindo a escolha das paletas de cores, logotipos e materiais gráficos que serão criados a seguir.
+              <p class="final-question-subtitle">
+                Sua escolha guiará o desenvolvimento da paleta de cores, logotipos e toda a papelaria oficial.
               </p>
             </div>
+
+            <!-- Two large interactive selection cards -->
+            <div class="selection-cards-grid">
+              
+              <!-- CARD: DIREÇÃO 01 -->
+              <div class="selection-option-card card-option-a" id="option-a-card">
+                <div class="option-card-header">
+                  <span class="option-badge">DIREÇÃO 01</span>
+                  <h3 class="option-card-title spec-cormorant">Quiet Luxury Editorial</h3>
+                </div>
+                <div class="option-card-visual">
+                  <div class="option-color-dots">
+                    <span class="color-dot" style="background-color: #F5F3EF; border: 1px solid rgba(255,255,255,0.15);" title="Off White"></span>
+                    <span class="color-dot" style="background-color: #727160;" title="Verde Oliva"></span>
+                    <span class="color-dot" style="background-color: #A36D52;" title="Terra Cota"></span>
+                  </div>
+                  <div class="option-typo-preview spec-canela">Canela / Inter</div>
+                </div>
+                <p class="option-card-desc">Foco na elegância silenciosa, no acolhimento físico e na tradição editorial clássica.</p>
+                <button class="option-select-btn" id="btn-select-a">
+                  <span>Selecionar Proposta A</span>
+                  <svg viewBox="0 0 24 24" width="16" height="16" class="check-svg">
+                    <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M20 6L9 17l-5-5"/>
+                  </svg>
+                </button>
+              </div>
+
+              <!-- CARD: DIREÇÃO 02 -->
+              <div class="selection-option-card card-option-b" id="option-b-card">
+                <div class="option-card-header">
+                  <span class="option-badge">DIREÇÃO 02</span>
+                  <h3 class="option-card-title spec-jakarta-title">Clínica Contemporânea</h3>
+                </div>
+                <div class="option-card-visual">
+                  <div class="option-color-dots">
+                    <span class="color-dot" style="background-color: #FAFAF8; border: 1px solid rgba(255,255,255,0.15);" title="Branco Neve"></span>
+                    <span class="color-dot" style="background-color: #8D9785;" title="Verde Sálvia"></span>
+                    <span class="color-dot" style="background-color: #4C6470;" title="Azul Petróleo"></span>
+                  </div>
+                  <div class="option-typo-preview spec-instrument">Instrument / Satoshi</div>
+                </div>
+                <p class="option-card-desc">Foco na precisão técnica, autoridade médica moderna e estética arquitetônica limpa.</p>
+                <button class="option-select-btn" id="btn-select-b">
+                  <span>Selecionar Proposta B</span>
+                  <svg viewBox="0 0 24 24" width="16" height="16" class="check-svg">
+                    <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M20 6L9 17l-5-5"/>
+                  </svg>
+                </button>
+              </div>
+
+            </div>
+
+            <!-- Success Overlay inside the slide itself (so it fades in elegantly on selection) -->
+            <div class="selection-success-overlay" id="selection-success-box">
+              <div class="success-icon-box">
+                <svg viewBox="0 0 24 24" width="32" height="32" class="success-check-svg">
+                  <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M20 6L9 17l-5-5"/>
+                </svg>
+              </div>
+              <h3 class="success-title">Escolha Registrada!</h3>
+              <p class="success-text">Obrigado por definir a direção criativa da sua marca, Dra. Larissa. Os materiais finais serão desenvolvidos sob a proposta selecionada.</p>
+              <button class="success-reset-btn" id="btn-reset-selection">Alterar Escolha</button>
+            </div>
+
           </div>
         </section>
 

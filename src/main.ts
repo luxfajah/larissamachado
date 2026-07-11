@@ -340,6 +340,54 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // Slide 18: Interactive Direction Selection
+  const btnSelectA = document.getElementById('btn-select-a');
+  const btnSelectB = document.getElementById('btn-select-b');
+  const cardOptionA = document.getElementById('option-a-card');
+  const cardOptionB = document.getElementById('option-b-card');
+  const successBox = document.getElementById('selection-success-box');
+  const btnReset = document.getElementById('btn-reset-selection');
+
+  const updateSelectionUI = (selectedOption: 'A' | 'B' | null) => {
+    if (selectedOption === 'A') {
+      cardOptionA?.classList.add('selected');
+      cardOptionB?.classList.remove('selected');
+      successBox?.classList.add('active');
+    } else if (selectedOption === 'B') {
+      cardOptionB?.classList.add('selected');
+      cardOptionA?.classList.remove('selected');
+      successBox?.classList.add('active');
+    } else {
+      cardOptionA?.classList.remove('selected');
+      cardOptionB?.classList.remove('selected');
+      successBox?.classList.remove('active');
+    }
+  };
+
+  // Check existing selection on load
+  const savedSelection = localStorage.getItem('dra_larissa_brand_selection');
+  if (savedSelection === 'A' || savedSelection === 'B') {
+    updateSelectionUI(savedSelection as 'A' | 'B');
+  }
+
+  btnSelectA?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    localStorage.setItem('dra_larissa_brand_selection', 'A');
+    updateSelectionUI('A');
+  });
+
+  btnSelectB?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    localStorage.setItem('dra_larissa_brand_selection', 'B');
+    updateSelectionUI('B');
+  });
+
+  btnReset?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    localStorage.removeItem('dra_larissa_brand_selection');
+    updateSelectionUI(null);
+  });
+
   // Setup scaling resize event
   window.addEventListener('resize', handleResize);
   
