@@ -26,10 +26,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const windowWidth = window.innerWidth;
     const windowHeight = window.innerHeight;
     
-    // Desktop/landscape mode: scale fixed 16:9 canvas
-    const isDesktop = windowWidth > 1024 && windowWidth > windowHeight;
+    // Scale fixed 16:9 canvas in landscape mode (both desktop and mobile!)
+    const isLandscape = windowWidth > windowHeight;
     
-    if (isDesktop) {
+    if (isLandscape) {
       const targetWidth = 1920;
       const targetHeight = 1080;
       const scale = Math.min(windowWidth / targetWidth, windowHeight / targetHeight);
@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
         htmlImg.style.top = `${(targetHeight - imgHeight) / 2}px`;
       });
     } else {
-      // Mobile/tablet adaptive mode
+      // Mobile/tablet portrait adaptive fallback mode (blocked by orientation overlay)
       presentationContainer.style.width = '100%';
       presentationContainer.style.height = '100%';
       presentationContainer.style.top = '0';
@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
       presentationContainer.style.transform = 'none';
       presentationContainer.classList.add('mobile-mode');
 
-      // Reset styles on mobile
+      // Reset styles
       const fullBleedImgs = document.querySelectorAll('.full-bleed-slide-img');
       fullBleedImgs.forEach((img) => {
         const htmlImg = img as HTMLElement;
