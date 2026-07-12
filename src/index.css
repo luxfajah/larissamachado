@@ -253,10 +253,171 @@ body {
 /* ==========================================================================
    SLIDE 01: CAPA LAYOUT (DUAS MÃOS BRAND COLORS)
    ========================================================================== */
+/* Original minimal cover layout (kept for fallback) */
 .cover-layout {
   justify-content: flex-end;
   padding-bottom: 180px;
 }
+
+/* ==========================================================================
+   SLIDE 01: CAPA — DUAS MÃOS BRAND COVER
+   ========================================================================== */
+.duasmaos-cover {
+  /* Override the default slide content layout */
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  padding: 0 !important;
+  display: block !important;
+  overflow: hidden !important;
+  /* Dark brand background */
+  background-color: #2B2A45;
+}
+
+/* Repeating pattern as subtle texture overlay */
+.cover-bg-pattern {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background-image: url('./duasmaos-pattern.webp');
+  background-size: cover;
+  background-position: center;
+  opacity: 0.18;
+  z-index: 0;
+}
+
+/* Large decorative symbol — bottom-right watermark */
+.cover-symbol-watermark {
+  position: absolute;
+  bottom: -80px;
+  right: -60px;
+  width: 520px;
+  opacity: 0.07;
+  z-index: 1;
+  pointer-events: none;
+}
+.cover-symbol-watermark img {
+  width: 100%;
+  filter: brightness(10);
+}
+
+/* Top-left: Duas Mãos logo */
+.cover-studio-logo {
+  position: absolute;
+  top: 52px;
+  left: 80px;
+  z-index: 10;
+}
+.cover-studio-logo img {
+  height: 38px;
+  width: auto;
+  object-fit: contain;
+}
+
+/* Center block: the main editorial content */
+.cover-center-block {
+  position: absolute;
+  top: 50%;
+  left: 80px;
+  transform: translateY(-50%);
+  z-index: 10;
+  max-width: 780px;
+}
+
+.cover-eyebrow-dm {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: #F5C16C;
+  margin-bottom: 28px;
+  opacity: 0.9;
+}
+
+.cover-title-dm {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 120px;
+  font-weight: 300;
+  line-height: 0.92;
+  letter-spacing: -0.02em;
+  color: #FAF9F6;
+  margin-bottom: 36px;
+}
+
+.cover-client-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 36px;
+  font-weight: 400;
+  font-style: italic;
+  color: rgba(250, 249, 246, 0.85);
+  margin-bottom: 10px;
+  letter-spacing: 0.01em;
+}
+
+.cover-client-spec {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: rgba(250, 249, 246, 0.45);
+}
+
+/* Thin vertical accent line on the right of center block */
+.cover-center-block::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: -80px;
+  width: 1px;
+  height: 100%;
+  background: linear-gradient(to bottom, transparent, rgba(245, 193, 108, 0.4) 30%, rgba(245, 193, 108, 0.4) 70%, transparent);
+}
+
+/* Bottom footer bar */
+.cover-footer-dm {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 48px;
+  padding: 28px 80px;
+  background: rgba(0, 0, 0, 0.25);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.cover-meta-item-dm {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.meta-label-dm {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(245, 193, 108, 0.7);
+}
+
+.meta-value-dm {
+  font-size: 13px;
+  font-weight: 400;
+  color: rgba(250, 249, 246, 0.75);
+  letter-spacing: 0.02em;
+}
+
+.cover-divider-dm {
+  width: 1px;
+  height: 36px;
+  background: rgba(255, 255, 255, 0.12);
+  flex-shrink: 0;
+}
+
+
 
 .cover-eyebrow {
   font-size: 14px;
