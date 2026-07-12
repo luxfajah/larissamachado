@@ -398,6 +398,56 @@ document.addEventListener('DOMContentLoaded', () => {
     updateSelectionUI(null);
   });
 
+  // Slide 19: Fullscreen Slider Controls
+  let activeSliderIdx = 0;
+  const sliderSlides = document.querySelectorAll('.slider-slide');
+  const sliderDots = document.querySelectorAll('.slider-dot');
+  const btnPrevSlider = document.getElementById('btn-prev-slider');
+  const btnNextSlider = document.getElementById('btn-next-slider');
+
+  function updateSlider(index: number) {
+    if (index < 0) index = sliderSlides.length - 1;
+    if (index >= sliderSlides.length) index = 0;
+    
+    activeSliderIdx = index;
+    
+    sliderSlides.forEach((slide, idx) => {
+      if (idx === index) {
+        slide.classList.add('active');
+      } else {
+        slide.classList.remove('active');
+      }
+    });
+
+    sliderDots.forEach((dot, idx) => {
+      if (idx === index) {
+        dot.classList.add('active');
+      } else {
+        dot.classList.remove('active');
+      }
+    });
+  }
+
+  btnPrevSlider?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    updateSlider(activeSliderIdx - 1);
+  });
+
+  btnNextSlider?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    updateSlider(activeSliderIdx + 1);
+  });
+
+  sliderDots.forEach((dot) => {
+    dot.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const idxAttr = dot.getAttribute('data-dot-idx');
+      if (idxAttr !== null) {
+        updateSlider(parseInt(idxAttr, 10));
+      }
+    });
+  });
+
   // Setup scaling resize event
   window.addEventListener('resize', handleResize);
   
