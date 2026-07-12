@@ -302,15 +302,9 @@ document.addEventListener('DOMContentLoaded', () => {
     logoCleanBoxes.forEach((box) => {
       box.addEventListener('click', (e) => {
         e.stopPropagation();
-        const images = box.querySelectorAll('img');
-        let visibleImg: HTMLImageElement | null = null;
-        images.forEach((img) => {
-          if (window.getComputedStyle(img).display !== 'none') {
-            visibleImg = img as HTMLImageElement;
-          }
-        });
-        if (visibleImg) {
-          const imgSrc = (visibleImg as HTMLImageElement).getAttribute('src');
+        const img = box.querySelector('img');
+        if (img) {
+          const imgSrc = img.getAttribute('src');
           if (imgSrc) {
             lightboxImg.src = imgSrc;
             logoLightbox.classList.add('active');
