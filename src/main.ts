@@ -268,7 +268,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Slide 14: Applications Tab Switcher
   const appTabs = document.querySelectorAll('.app-tab-btn');
-  const appPanels = document.querySelectorAll('.app-panel');
 
   appTabs.forEach((tab) => {
     tab.addEventListener('click', (e) => {
@@ -282,13 +281,24 @@ document.addEventListener('DOMContentLoaded', () => {
       appTabs.forEach(t => t.classList.remove('active'));
       tab.classList.add('active');
 
-      // Update active panel display
-      appPanels.forEach((panel) => {
-        panel.classList.remove('active');
-        if (panel.id === `panel-${targetApp}`) {
-          panel.classList.add('active');
-        }
-      });
+      // Find current and next panels
+      const currentPanel = document.querySelector('.app-panel.active') as HTMLElement | null;
+      const nextPanel = document.getElementById(`panel-${targetApp}`) as HTMLElement | null;
+
+      if (!nextPanel || currentPanel === nextPanel) return;
+
+      // Trigger exit animation on current panel
+      if (currentPanel) {
+        currentPanel.classList.add('exiting');
+        currentPanel.classList.remove('active');
+        // Clean up exiting class after animation completes
+        setTimeout(() => {
+          currentPanel.classList.remove('exiting');
+        }, 520);
+      }
+
+      // Trigger enter animation on next panel
+      nextPanel.classList.add('active');
     });
   });
 
