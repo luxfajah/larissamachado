@@ -410,6 +410,14 @@ body {
   letter-spacing: 0.02em;
 }
 
+.cover-footer-tagline-img {
+  height: 18px;
+  width: auto;
+  opacity: 0.95;
+  margin-top: 4px;
+  object-fit: contain;
+}
+
 .cover-divider-dm {
   width: 1px;
   height: 36px;
