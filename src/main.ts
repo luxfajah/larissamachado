@@ -74,6 +74,30 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // Single Page 1015 Gallery Logic (No animations, instant step change)
+  let gallery1015Index = 0;
+
+  function updateGallery1015Item(index: number) {
+    const slide = document.getElementById('slide-1015-gallery');
+    if (!slide) return;
+    const items = slide.querySelectorAll('.gallery-1015-item');
+    items.forEach((item, idx) => {
+      if (idx === index) {
+        item.classList.add('active');
+      } else {
+        item.classList.remove('active');
+      }
+    });
+    const counter = slide.querySelector('#gallery-current-num');
+    const totalSpan = slide.querySelector('#gallery-total-num');
+    if (counter) {
+      counter.textContent = String(index + 1).padStart(2, '0');
+    }
+    if (totalSpan) {
+      totalSpan.textContent = String(items.length).padStart(2, '0');
+    }
+  }
+
   // Slide navigation function
   function goToSlide(index: number) {
     if (index < 0 || index >= totalSlides) return;
@@ -91,28 +115,34 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
+    // Reset gallery item when entering 1015 gallery slide
+    const activeSlideId = slides[index]?.id;
+    if (activeSlideId === 'slide-1015-gallery') {
+      gallery1015Index = 0;
+      updateGallery1015Item(0);
+    }
 
-
-    // Update dynamic body theme (eliminate side letterboxing bars on wide screens)
+    // Update dynamic body & container theme to eliminate letterboxing and blend smoothly
     const activeSlide = slides[index];
     if (activeSlide) {
-      const isDark = activeSlide.id === 'slide-01';
-      if (isDark) {
-        document.body.style.backgroundColor = '#2E2A6E';
+      const theme = activeSlide.getAttribute('data-theme') || 'off-white';
+      
+      if (theme === 'dark-petrol') {
+        document.body.style.backgroundColor = '#1C262B';
+        if (presentationContainer) presentationContainer.style.backgroundColor = '#1C262B';
         document.body.classList.add('hud-dark');
-        presentationContainer.style.overflow = 'hidden';
-      } else if (activeSlide.id === 'slide-10' || activeSlide.id === 'slide-11') {
-        document.body.style.backgroundColor = '#f1eee9';
+      } else if (theme === 'sand-paper') {
+        document.body.style.backgroundColor = '#F4F0EA';
+        if (presentationContainer) presentationContainer.style.backgroundColor = '#F4F0EA';
         document.body.classList.remove('hud-dark');
-        presentationContainer.style.overflow = 'visible';
-      } else if (activeSlide.id === 'slide-12') {
-        document.body.style.backgroundColor = '#cfcdca';
+      } else if (theme === 'neutral-grey') {
+        document.body.style.backgroundColor = '#ECE9E3';
+        if (presentationContainer) presentationContainer.style.backgroundColor = '#ECE9E3';
         document.body.classList.remove('hud-dark');
-        presentationContainer.style.overflow = 'visible';
       } else {
         document.body.style.backgroundColor = '#FAF9F6';
+        if (presentationContainer) presentationContainer.style.backgroundColor = '#FAF9F6';
         document.body.classList.remove('hud-dark');
-        presentationContainer.style.overflow = 'hidden';
       }
     }
 
@@ -148,15 +178,35 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Navigation handlers
+  // Navigation handlers with inner gallery progression on slide-1015-gallery
   function nextSlide() {
+    const activeId = slides[currentSlideIndex]?.id;
+    if (activeId === 'slide-1015-gallery') {
+      const slide = document.getElementById('slide-1015-gallery');
+      const itemsCount = slide ? slide.querySelectorAll('.gallery-1015-item').length : 18;
+      if (gallery1015Index < itemsCount - 1) {
+        gallery1015Index++;
+        updateGallery1015Item(gallery1015Index);
+        return;
+      }
+    }
+
     if (currentSlideIndex < totalSlides - 1) {
       goToSlide(currentSlideIndex + 1);
     }
   }
 
-  // Prev navigation
+  // Prev navigation handlers with inner gallery regression on slide-1015-gallery
   function prevSlide() {
+    const activeId = slides[currentSlideIndex]?.id;
+    if (activeId === 'slide-1015-gallery') {
+      if (gallery1015Index > 0) {
+        gallery1015Index--;
+        updateGallery1015Item(gallery1015Index);
+        return;
+      }
+    }
+
     if (currentSlideIndex > 0) {
       goToSlide(currentSlideIndex - 1);
     }
@@ -406,6 +456,35 @@ document.addEventListener('DOMContentLoaded', () => {
     e.stopPropagation();
     localStorage.removeItem('dra_larissa_brand_selection');
     updateSelectionUI(null);
+  });
+
+  // Drive Explorer Interactive Folder Switcher
+  const sidebarItems = document.querySelectorAll('.sidebar-folder-item');
+  const detailPanels = document.querySelectorAll('.folder-detail-panel');
+  const breadcrumbActive = document.querySelector('.active-bc');
+
+  sidebarItems.forEach((item) => {
+    item.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const folderId = item.getAttribute('data-folder');
+      
+      // Update sidebar active states
+      sidebarItems.forEach((sb) => sb.classList.remove('active'));
+      item.classList.add('active');
+
+      // Update detail panel active states
+      detailPanels.forEach((panel) => panel.classList.remove('active'));
+      const targetPanel = document.getElementById(`folder-detail-${folderId}`);
+      if (targetPanel) {
+        targetPanel.classList.add('active');
+      }
+
+      // Update breadcrumb text
+      const folderNameEl = item.querySelector('.sf-name');
+      if (folderNameEl && breadcrumbActive) {
+        breadcrumbActive.textContent = folderNameEl.textContent || 'Pasta';
+      }
+    });
   });
 
   // Setup scaling resize event

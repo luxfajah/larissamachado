@@ -10,27 +10,33 @@
 
 /* Font & Core CSS Variable Definitions */
 :root {
-  /* Colors (Strictly Neutral to highlight brand designs later) */
-  --color-bg-base: #111111;            /* Viewport backplate */
-  --color-slide-bg: #FAF9F6;          /* Slide canvas (Warm Off-white / Paper) */
-  --color-divider: rgba(0, 0, 0, 0.08); /* Discreet vertical divider */
+  /* Brand Color Tokens (Option 02 - Clínica Contemporânea) */
+  --brand-azul-petroleo: #4C6470;
+  --brand-areia-quente: #DED6CB;
+  --brand-verde-oliva: #727160;
+  --brand-off-white: #F5F3EF;
+  --brand-chumbo: #303437;
+
+  --color-bg-base: #1C2429;            /* Deep petrol backplate */
+  --color-slide-bg: #FAF9F6;          /* Slide canvas (Warm Off-white) */
+  --color-divider: rgba(76, 100, 112, 0.18); /* Azul Petróleo subtle divider */
   
-  --color-text-primary: #121110;      /* Dark carbon */
-  --color-text-secondary: #4A4844;    /* Muted charcoal */
-  --color-text-muted: #8E8C87;       /* Soft warm gray */
-  --color-border: #E8E6E0;            /* Light line divider */
+  --color-text-primary: #303437;      /* Chumbo carbon */
+  --color-text-secondary: #4C6470;    /* Azul Petróleo titles & primary text */
+  --color-text-muted: #727160;       /* Verde Oliva muted accents */
+  --color-border: #DED6CB;            /* Areia Quente border */
   
   /* Placeholders styling */
   --placeholder-bg: #F3F1EC;
-  --placeholder-border: #D3D1CB;
-  --placeholder-text: #7C7A74;
+  --placeholder-border: #DED6CB;
+  --placeholder-text: #727160;
 
-  /* Font Families representing two distinct typographies */
-  --font-dir-a-title: 'Canela', 'Cormorant Garamond', serif;
-  --font-dir-a-body: 'Inter', sans-serif;
-  --font-dir-b-title: 'Instrument Serif', serif;
-  --font-dir-b-body: 'IBM Plex Sans', sans-serif;
-  --font-system: 'Inter', sans-serif;
+  /* Font Families - SATOSHI EVERYWHERE */
+  --font-dir-a-title: 'Satoshi', sans-serif;
+  --font-dir-a-body: 'Satoshi', sans-serif;
+  --font-dir-b-title: 'Satoshi', sans-serif;
+  --font-dir-b-body: 'Satoshi', sans-serif;
+  --font-system: 'Satoshi', sans-serif;
 }
 
 /* ==========================================================================
@@ -103,6 +109,27 @@ body {
   z-index: 10;
 }
 
+/* Cohesive Brand Theme Background Variants (Option 02 Palette) */
+.slide[data-theme="dark-petrol"] {
+  background-color: #1C262B;
+  color: #FAF9F6;
+}
+
+.slide[data-theme="sand-paper"] {
+  background-color: #F4F0EA;
+  color: #303437;
+}
+
+.slide[data-theme="off-white"] {
+  background-color: #FAF9F6;
+  color: #303437;
+}
+
+.slide[data-theme="neutral-grey"] {
+  background-color: #ECE9E3;
+  color: #303437;
+}
+
 /* Slide in the past */
 .slide.past {
   opacity: 0;
@@ -171,7 +198,12 @@ body {
 .slide-content .app-description,
 .slide-content .instagram-grid,
 .slide-content .full-screen-comparison-box,
-.slide-content .summary-card {
+.slide-content .summary-card,
+.slide-content .drive-hero-card,
+.slide-content .formats-grid,
+.slide-content .format-card,
+.slide-content .folder-bento-grid,
+.slide-content .folder-bento-card {
   opacity: 0;
   transform: translateY(15px);
   transition: opacity 0.9s cubic-bezier(0.25, 1, 0.5, 1), 
@@ -200,7 +232,12 @@ body {
 .slide.active .slide-content .app-description,
 .slide.active .slide-content .instagram-grid,
 .slide.active .slide-content .full-screen-comparison-box,
-.slide.active .slide-content .summary-card {
+.slide.active .slide-content .summary-card,
+.slide.active .slide-content .drive-hero-card,
+.slide.active .slide-content .formats-grid,
+.slide.active .slide-content .format-card,
+.slide.active .slide-content .folder-bento-grid,
+.slide.active .slide-content .folder-bento-card {
   opacity: 1;
   transform: translateY(0);
 }
@@ -1597,14 +1634,14 @@ body {
   font-weight: 300;
 }
 
-/* Specific Font Rules */
-.spec-cormorant { font-family: 'Cormorant Garamond', serif; }
-.spec-canela { font-family: var(--font-dir-a-title); }
-.spec-inter { font-family: var(--font-dir-a-body); }
-.spec-instrument { font-family: var(--font-dir-b-title); }
-.spec-jakarta { font-family: 'General Sans', sans-serif; }
+/* Specific Font Rules - SATOSHI EVERYWHERE */
+.spec-cormorant { font-family: 'Satoshi', sans-serif; }
+.spec-canela { font-family: 'Satoshi', sans-serif; }
+.spec-inter { font-family: 'Satoshi', sans-serif; }
+.spec-instrument { font-family: 'Satoshi', sans-serif; }
+.spec-jakarta { font-family: 'Satoshi', sans-serif; }
 .spec-satoshi { font-family: 'Satoshi', sans-serif; }
-.spec-plex { font-family: var(--font-dir-b-body); }
+.spec-plex { font-family: 'Satoshi', sans-serif; }
 
 /* ==========================================================================
    SLIDE 13: INSTAGRAM FEED PREVIEW
@@ -3246,3 +3283,645 @@ body.hud-dark .key-cap {
     display: flex !important;
   }
 }
+
+/* ==========================================================================
+   SINGLE-FOCUS LAYOUTS FOR OPTION 2 PRESENTATION
+   ========================================================================== */
+.single-focus-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  padding: 80px 100px 80px 100px;
+  position: relative;
+  box-sizing: border-box;
+}
+
+.single-focus-header {
+  margin-top: 10px;
+  margin-bottom: 32px;
+  max-width: 1200px;
+}
+
+.single-focus-title {
+  font-family: var(--font-dir-b-title);
+  font-size: 42px;
+  font-weight: 400;
+  color: var(--color-text-primary);
+  margin-bottom: 12px;
+  letter-spacing: -0.01em;
+}
+
+.single-focus-intro {
+  font-family: var(--font-dir-b-body);
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--color-text-secondary);
+  max-width: 980px;
+}
+
+/* Slide 11: 5 Pantone cards grid layout */
+.palette-pantone-grid-5 {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 24px;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.palette-pantone-grid-5 .pantone-card {
+  height: 420px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+}
+
+.palette-pantone-grid-5 .pantone-color-block {
+  height: 240px;
+}
+
+/* Slide 12: Typography single specimen */
+.typography-single-container {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.single-specimen-card {
+  width: 100%;
+  padding: 48px 60px;
+}
+
+/* Slide 13: Single social grid layout */
+.social-single-grid {
+  display: grid;
+  grid-template-columns: 520px 1fr;
+  gap: 60px;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.single-instagram-box {
+  width: 100%;
+  max-height: 600px;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+}
+
+.single-instagram-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.social-info-column {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.social-title {
+  font-family: var(--font-dir-b-title);
+  font-size: 40px;
+  font-weight: 400;
+  color: var(--color-text-primary);
+  margin: 16px 0 20px 0;
+}
+
+.social-description {
+  font-family: var(--font-dir-b-body);
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--color-text-secondary);
+  margin-bottom: 28px;
+}
+
+.social-bullets {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.social-bullet-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-family: var(--font-dir-b-body);
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--color-text-secondary);
+}
+
+.social-bullet-item .bullet-dot {
+  color: #4C6470;
+  font-size: 20px;
+  line-height: 1;
+}
+
+/* Slide 15: Single hero summary card */
+.single-summary-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.single-hero-card {
+  max-width: 1200px;
+  width: 100%;
+}
+
+/* ==========================================================================
+   SECTION COVER SLIDES (Full-bleed image + Dark Overlay + Editorial Title)
+   ========================================================================== */
+.section-cover-layout {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 120px 140px;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.section-cover-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    135deg,
+    rgba(18, 17, 16, 0.88) 0%,
+    rgba(18, 17, 16, 0.65) 50%,
+    rgba(18, 17, 16, 0.90) 100%
+  );
+  z-index: 2;
+  backdrop-filter: blur(2px);
+}
+
+.section-cover-content {
+  position: relative;
+  z-index: 5;
+  max-width: 900px;
+}
+
+.section-cover-number {
+  font-family: var(--font-dir-b-body);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  color: #DED6CB;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+  display: inline-block;
+  padding: 6px 16px;
+  border: 1px solid rgba(222, 214, 203, 0.4);
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.section-cover-title {
+  font-family: var(--font-dir-b-title);
+  font-size: 72px;
+  font-weight: 400;
+  color: #FAF9F6;
+  line-height: 1.08;
+  margin-bottom: 20px;
+  letter-spacing: -0.01em;
+}
+
+.section-cover-subtitle {
+  font-family: var(--font-dir-b-body);
+  font-size: 18px;
+  line-height: 1.6;
+  color: rgba(250, 249, 246, 0.8);
+  font-weight: 300;
+  max-width: 680px;
+}
+
+/* ==========================================================================
+   SEÇÃO 15: GUIA DE ARQUIVOS, GOOGLE DRIVE & FORMATOS
+   ========================================================================== */
+.drive-guide-layout {
+  justify-content: center;
+}
+
+.drive-hero-card {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--color-border);
+  border-left: 4px solid var(--brand-azul-petroleo);
+  border-radius: 8px;
+  padding: 32px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+  box-shadow: 0 4px 20px rgba(76, 100, 112, 0.06);
+}
+
+.drive-hero-info {
+  max-width: 800px;
+}
+
+.drive-hero-title {
+  font-size: 26px;
+  font-weight: 600;
+  color: var(--brand-azul-petroleo);
+  margin-bottom: 8px;
+}
+
+.drive-hero-desc {
+  font-size: 15px;
+  color: var(--brand-chumbo);
+  line-height: 1.5;
+}
+
+.drive-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background-color: var(--brand-azul-petroleo);
+  color: #FAF9F6;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  padding: 16px 28px;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 14px rgba(76, 100, 112, 0.25);
+  flex-shrink: 0;
+}
+
+.drive-cta-btn:hover {
+  background-color: #384C55;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(76, 100, 112, 0.35);
+}
+
+.formats-section-title {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: var(--brand-verde-oliva);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+.formats-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+}
+
+.format-card {
+  background-color: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(76, 100, 112, 0.15);
+  border-radius: 6px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: all 0.25s ease;
+}
+
+.format-card:hover {
+  background-color: #FFFFFF;
+  border-color: var(--brand-azul-petroleo);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 18px rgba(76, 100, 112, 0.08);
+}
+
+.format-badge {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  padding: 4px 10px;
+  border-radius: 4px;
+  display: inline-block;
+  align-self: flex-start;
+}
+
+.badge-ai { background-color: rgba(214, 126, 0, 0.12); color: #D67E00; border: 1px solid rgba(214, 126, 0, 0.3); }
+.badge-svg { background-color: rgba(76, 100, 112, 0.12); color: #4C6470; border: 1px solid rgba(76, 100, 112, 0.3); }
+.badge-png { background-color: rgba(114, 113, 96, 0.12); color: #727160; border: 1px solid rgba(114, 113, 96, 0.3); }
+.badge-pdf { background-color: rgba(200, 35, 51, 0.12); color: #C82333; border: 1px solid rgba(200, 35, 51, 0.3); }
+.badge-font { background-color: rgba(48, 52, 55, 0.12); color: #303437; border: 1px solid rgba(48, 52, 55, 0.3); }
+
+.format-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--brand-chumbo);
+}
+
+.format-desc {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--color-text-secondary);
+  font-weight: 300;
+}
+
+/* CLEAN BENTO GRID FOR DRIVE FOLDER STRUCTURE */
+.folder-bento-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  width: 100%;
+}
+
+.folder-bento-card {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--color-border);
+  border-top: 3px solid var(--brand-azul-petroleo);
+  border-radius: 8px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 15px rgba(76, 100, 112, 0.04);
+}
+
+.folder-bento-card:hover {
+  background-color: #FFFFFF;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(76, 100, 112, 0.1);
+  border-top-color: var(--brand-verde-oliva);
+}
+
+.folder-bento-card.card-wide {
+  grid-column: span 3;
+  display: grid;
+  grid-template-columns: 1.2fr 2fr 1.2fr;
+  align-items: center;
+  gap: 24px;
+  border-top-color: var(--brand-verde-oliva);
+  background: rgba(245, 243, 239, 0.9);
+}
+
+.folder-card-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.folder-card-icon {
+  font-size: 22px;
+}
+
+.folder-card-title {
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--brand-azul-petroleo);
+}
+
+.folder-card-block {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.folder-block-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--brand-verde-oliva);
+  text-transform: uppercase;
+}
+
+.folder-block-text {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--brand-chumbo);
+  font-weight: 300;
+}
+
+.folder-pill-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.folder-pill-item {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 4px;
+  background-color: rgba(76, 100, 112, 0.08);
+  color: var(--brand-azul-petroleo);
+}
+
+/* FULL SCREEN STRIPE COLUMNS LAYOUT (EDGE-TO-EDGE) */
+.full-screen-stripe-layout {
+  width: 100%;
+  height: 100%;
+  padding: 0 !important;
+  margin: 0 !important;
+  overflow: hidden;
+}
+
+.stripe-columns-container {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+.stripe-col {
+  flex: 1;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  transition: flex 0.45s cubic-bezier(0.16, 1, 0.3, 1), 
+              filter 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+  
+  /* Staggered entrance animation baseline */
+  opacity: 0;
+  transform: translateY(100%);
+}
+
+/* Trigger column staggered entrance on slide.active */
+.slide.active .stripe-col {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 1.3s cubic-bezier(0.16, 1, 0.3, 1) var(--col-delay, 0s),
+              transform 1.3s cubic-bezier(0.16, 1, 0.3, 1) var(--col-delay, 0s),
+              flex 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+              filter 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.stripe-icon-wrapper,
+.stripe-logo-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), 
+              filter 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  opacity: 0;
+  transform: scale(0.65) translateY(30px);
+}
+
+.slide.active .stripe-icon-wrapper,
+.slide.active .stripe-logo-wrapper {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+  transition: opacity 1.5s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--col-delay, 0s) + 0.25s),
+              transform 1.5s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--col-delay, 0s) + 0.25s);
+}
+
+/* Mouse Hover Interaction on Stripes */
+.stripe-col:hover {
+  flex: 1.25;
+  z-index: 10;
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.18);
+}
+
+.stripe-col:hover .stripe-icon-wrapper,
+.stripe-col:hover .stripe-logo-wrapper {
+  transform: scale(1.15) translateY(-10px);
+  filter: drop-shadow(0 14px 28px rgba(0, 0, 0, 0.2));
+}
+
+/* FULL SCREEN STRIPE COLUMNS LAYOUT (EDGE-TO-EDGE) */
+.full-screen-stripe-layout {
+  width: 100%;
+  height: 100%;
+  padding: 0 !important;
+  margin: 0 !important;
+  overflow: hidden;
+}
+
+.stripe-columns-container {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+.stripe-col {
+  flex: 1;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  transition: flex 0.45s cubic-bezier(0.16, 1, 0.3, 1), 
+              filter 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+  
+  /* Staggered entrance animation baseline */
+  opacity: 0;
+  transform: translateY(100%);
+}
+
+/* Trigger column staggered entrance on slide.active */
+.slide.active .stripe-col {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 1.3s cubic-bezier(0.16, 1, 0.3, 1) var(--col-delay, 0s),
+              transform 1.3s cubic-bezier(0.16, 1, 0.3, 1) var(--col-delay, 0s),
+              flex 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+              filter 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.stripe-icon-wrapper,
+.stripe-logo-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), 
+              filter 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  opacity: 0;
+  transform: scale(0.65) translateY(30px);
+}
+
+.slide.active .stripe-icon-wrapper,
+.slide.active .stripe-logo-wrapper {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+  transition: opacity 1.5s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--col-delay, 0s) + 0.25s),
+              transform 1.5s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--col-delay, 0s) + 0.25s);
+}
+
+/* Mouse Hover Interaction on Stripes */
+.stripe-col:hover {
+  flex: 1.25;
+  z-index: 10;
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.18);
+}
+
+.stripe-col:hover .stripe-icon-wrapper,
+.stripe-col:hover .stripe-logo-wrapper {
+  transform: scale(1.15) translateY(-10px);
+  filter: drop-shadow(0 14px 28px rgba(0, 0, 0, 0.2));
+}
+
+/* HIDE PRESENTATION HUD NAVBAR AS REQUESTED */
+.presentation-hud,
+.hud-trigger-zone {
+  display: none !important;
+}
+
+/* SINGLE PAGE 1015 GALLERY (STRICTLY NO TRANSITIONS / ANIMATIONS) */
+.gallery-1015-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  background-color: #303437;
+}
+
+.gallery-1015-item {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+  transition: none !important;
+  animation: none !important;
+}
+
+.gallery-1015-item.active {
+  display: block !important;
+}
+
+.gallery-1015-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: none !important;
+  animation: none !important;
+}
+
+.hero-icon-svg-wrapper {
+  width: 320px;
+  height: 280px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ALL COVER SLIDES (MAIN COVER + SECTION COVERS) USE "fundo-capas.svg" BACKGROUND */
+.cover-layout,
+.section-cover-layout {
+  position: relative;
+  background-image: url('/fundo-capas.svg') !important;
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+}
+
+
