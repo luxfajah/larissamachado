@@ -131,7 +131,7 @@ export function initFlipbook() {
     return side === 'left' ? bookletPages[leftIdx] : bookletPages[rightIdx];
   }
 
-  // Realistic 3D Turn Next (Forward Turn with Physical Paper Lift & Dual-Sided Print Simulation)
+  // Realistic 3D Turn Next (Flipping Right Page to Left)
   function turnNext() {
     if (isTurning || currentSpread >= totalSpreads - 1) return;
     isTurning = true;
@@ -139,10 +139,23 @@ export function initFlipbook() {
     const book = container.querySelector('.real-flipbook-3d');
     if (!book) return;
 
+    const nextSpread = currentSpread + 1;
+
+    // 1. Immediately update the stationary right base page underneath to show the NEXT right page
+    const rightBaseImg = book.querySelector('.base-leaf.right-leaf img');
+    const nextRightPage = getPageForSpread(nextSpread, 'right');
+    if (rightBaseImg && nextRightPage) {
+      rightBaseImg.src = nextRightPage.src;
+    } else if (rightBaseImg && !nextRightPage) {
+      const rightBase = book.querySelector('.base-leaf.right-leaf');
+      if (rightBase) rightBase.style.opacity = '0';
+    }
+
+    // 2. Create the turning leaf
     const turnLeaf = document.createElement('div');
     turnLeaf.className = 'page-leaf turning-leaf turn-forward';
 
-    // Front Face (Right Page being lifted)
+    // Front face = Current Right Page (R1)
     const frontFace = document.createElement('div');
     frontFace.className = 'leaf-face leaf-front';
     const frontImg = currentSpread === 0 ? bookletPages[0] : getPageForSpread(currentSpread, 'right');
@@ -152,10 +165,10 @@ export function initFlipbook() {
       frontFace.appendChild(img);
     }
 
-    // Back Face (Reverse side of the same physical paper sheet)
+    // Back face = Next Left Page (L2) - printed on the reverse side of the paper!
     const backFace = document.createElement('div');
     backFace.className = 'leaf-face leaf-back';
-    const backImg = getPageForSpread(currentSpread + 1, 'left') || bookletPages[15];
+    const backImg = getPageForSpread(nextSpread, 'left') || bookletPages[15];
     if (backImg) {
       const img = document.createElement('img');
       img.src = backImg.src;
@@ -170,19 +183,22 @@ export function initFlipbook() {
     turnLeaf.appendChild(shadow);
     book.appendChild(turnLeaf);
 
-    // Trigger keyframe animation for realistic physical paper lift & 3D arc bend
+    // 3. Animate 3D rotation from 0deg to -180deg
     requestAnimationFrame(() => {
-      turnLeaf.classList.add('animating-turn-forward');
+      turnLeaf.style.transform = 'rotateY(-180deg) scale(0.98)';
+      setTimeout(() => {
+        turnLeaf.style.transform = 'rotateY(-180deg) scale(1)';
+      }, 300);
     });
 
     setTimeout(() => {
-      currentSpread++;
+      currentSpread = nextSpread;
       renderBook();
       isTurning = false;
-    }, 680);
+    }, 600);
   }
 
-  // Realistic 3D Turn Prev (Backward Turn)
+  // Realistic 3D Turn Prev (Flipping Left Page to Right)
   function turnPrev() {
     if (isTurning || currentSpread <= 0) return;
     isTurning = true;
@@ -190,27 +206,41 @@ export function initFlipbook() {
     const book = container.querySelector('.real-flipbook-3d');
     if (!book) return;
 
-    const turnLeaf = document.createElement('div');
-    turnLeaf.className = 'page-leaf turning-leaf turn-backward';
+    const prevSpread = currentSpread - 1;
 
-    // Front Face (Left Page of previous spread)
-    const frontFace = document.createElement('div');
-    frontFace.className = 'leaf-face leaf-front';
-    const frontImg = getPageForSpread(currentSpread - 1, 'right') || bookletPages[0];
-    if (frontImg) {
-      const img = document.createElement('img');
-      img.src = frontImg.src;
-      frontFace.appendChild(img);
+    // 1. Immediately update the stationary left base page underneath to show the PREVIOUS left page
+    const leftBaseImg = book.querySelector('.base-leaf.left-leaf img');
+    const prevLeftPage = getPageForSpread(prevSpread, 'left');
+    if (leftBaseImg && prevLeftPage) {
+      leftBaseImg.src = prevLeftPage.src;
+    } else if (leftBaseImg && !prevLeftPage) {
+      const leftBase = book.querySelector('.base-leaf.left-leaf');
+      if (leftBase) leftBase.style.opacity = '0';
     }
 
-    // Back Face (Left Page being lifted back to the right)
+    // 2. Create turning leaf starting at -180deg
+    const turnLeaf = document.createElement('div');
+    turnLeaf.className = 'page-leaf turning-leaf turn-backward';
+    turnLeaf.style.transform = 'rotateY(-180deg)';
+
+    // Back face (facing user at -180deg on the left) = Current Left Page (L2)
     const backFace = document.createElement('div');
     backFace.className = 'leaf-face leaf-back';
-    const backImg = getPageForSpread(currentSpread, 'left');
+    const backImg = getPageForSpread(currentSpread, 'left') || bookletPages[15];
     if (backImg) {
       const img = document.createElement('img');
       img.src = backImg.src;
       backFace.appendChild(img);
+    }
+
+    // Front face (turning to face user at 0deg on the right) = Previous Right Page (R1)
+    const frontFace = document.createElement('div');
+    frontFace.className = 'leaf-face leaf-front';
+    const frontImg = getPageForSpread(prevSpread, 'right') || bookletPages[0];
+    if (frontImg) {
+      const img = document.createElement('img');
+      img.src = frontImg.src;
+      frontFace.appendChild(img);
     }
 
     const shadow = document.createElement('div');
@@ -221,15 +251,19 @@ export function initFlipbook() {
     turnLeaf.appendChild(shadow);
     book.appendChild(turnLeaf);
 
+    // 3. Animate 3D rotation from -180deg to 0deg
     requestAnimationFrame(() => {
-      turnLeaf.classList.add('animating-turn-backward');
+      turnLeaf.style.transform = 'rotateY(0deg) scale(0.98)';
+      setTimeout(() => {
+        turnLeaf.style.transform = 'rotateY(0deg) scale(1)';
+      }, 300);
     });
 
     setTimeout(() => {
-      currentSpread--;
+      currentSpread = prevSpread;
       renderBook();
       isTurning = false;
-    }, 680);
+    }, 600);
   }
 
   function goToSpread(targetSpread) {
