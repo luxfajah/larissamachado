@@ -296,26 +296,51 @@ body {
   padding-bottom: 180px;
 }
 
-/* ==========================================================================
-   SLIDE 01: CAPA — DUAS MÃOS BRAND COVER
-   ========================================================================== */
-.duasmaos-cover {
-  /* Override default layout for 100% full bleed background */
-  position: absolute !important;
-  top: 0 !important;
-  left: 0 !important;
-  width: 100% !important;
-  height: 100% !important;
-  padding: 0 !important;
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  justify-content: center !important;
-  overflow: hidden !important;
-  background-image: url('/capa-inicial.jpg') !important;
-  background-size: cover !important;
-  background-position: center !important;
-  background-repeat: no-repeat !important;
+/* ULTRA-CLEAN COVER FOOTER (QUIET LUXURY UI/UX PRO MAX) */
+.cover-clean-footer {
+  position: absolute;
+  bottom: 30px;
+  left: 60px;
+  right: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 20;
+  padding: 12px 28px;
+  background: rgba(18, 26, 32, 0.4);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 40px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  pointer-events: auto;
+}
+
+.clean-footer-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.clean-footer-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.clean-footer-value {
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  color: #FAF9F6;
+}
+
+.clean-footer-divider {
+  width: 1px;
+  height: 14px;
+  background: rgba(255, 255, 255, 0.2);
 }
 
 .cover-center-brand-focus {
