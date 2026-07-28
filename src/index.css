@@ -3627,64 +3627,76 @@ body.hud-dark .key-cap {
 }
 
 /* CLEAN BENTO GRID FOR DRIVE FOLDER STRUCTURE */
-.folder-bento-grid {
+/* UI/UX PRO MAX HIGH-END FOLDER GRID LAYOUT */
+.section-header-block {
+  margin-bottom: 24px;
+}
+
+.drive-page-title {
+  font-family: var(--font-dir-a-title);
+  font-size: 30px;
+  font-weight: 300;
+  color: var(--brand-azul-petroleo);
+  letter-spacing: -0.01em;
+  margin: 6px 0 6px 0;
+}
+
+.drive-page-subtitle {
+  font-size: 13.5px;
+  color: var(--brand-chumbo);
+  font-weight: 300;
+  margin: 0;
+  opacity: 0.85;
+}
+
+.folder-grid-layout {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 16px;
   width: 100%;
 }
 
-/* UI/UX PRO MAX ENHANCED BENTO GRID FOR GOOGLE DRIVE FOLDER STRUCTURE */
-.folder-bento-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 18px;
-  width: 100%;
-}
-
-.folder-bento-card {
-  background: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(0, 0, 0, 0.07);
-  border-top: 3px solid var(--card-accent, var(--brand-azul-petroleo));
-  border-radius: 12px;
-  padding: 22px;
+.folder-card-pro {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(76, 100, 112, 0.12);
+  border-radius: 10px;
+  padding: 18px;
   display: flex;
   flex-direction: column;
-  gap: 14px;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 4px 18px rgba(48, 52, 55, 0.03);
-  position: relative;
+  gap: 12px;
+  transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 15px rgba(76, 100, 112, 0.03);
 }
 
-.folder-bento-card:hover {
-  background-color: #FFFFFF;
+.folder-card-pro:hover {
+  background: #FFFFFF;
+  border-color: var(--brand-azul-petroleo);
   transform: translateY(-4px);
-  box-shadow: 0 14px 35px rgba(48, 52, 55, 0.08);
-  border-color: rgba(76, 100, 112, 0.22);
+  box-shadow: 0 12px 30px rgba(76, 100, 112, 0.1);
 }
 
-.folder-bento-card.card-wide {
+.folder-card-pro.featured-card {
   grid-column: span 3;
   display: grid;
   grid-template-columns: 1.2fr 2fr 1.2fr;
   align-items: center;
-  gap: 24px;
-  background: linear-gradient(135deg, rgba(245, 243, 239, 0.95) 0%, rgba(255, 255, 255, 0.95) 100%);
-  border-top-color: #E8763A;
+  gap: 20px;
+  background: linear-gradient(135deg, rgba(255, 250, 245, 0.95) 0%, rgba(255, 255, 255, 0.95) 100%);
+  border: 1px solid rgba(232, 118, 58, 0.25);
 }
 
-.folder-card-head {
+.folder-card-header {
   display: flex;
   align-items: center;
   gap: 12px;
 }
 
-.folder-icon-badge {
-  width: 40px;
-  height: 40px;
-  border-radius: 8px;
+.folder-icon-circle {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -3692,40 +3704,100 @@ body.hud-dark .key-cap {
   transition: transform 0.25s ease;
 }
 
-.folder-bento-card:hover .folder-icon-badge {
+.folder-card-pro:hover .folder-icon-circle {
   transform: scale(1.08);
 }
 
-.folder-num-tag {
-  display: block;
+.icon-petrol { background: rgba(76, 100, 112, 0.1); color: #4C6470; }
+.icon-oliva  { background: rgba(114, 113, 96, 0.1); color: #727160; }
+.icon-areia  { background: rgba(222, 214, 203, 0.4); color: #727160; }
+.icon-chumbo { background: rgba(48, 52, 55, 0.1); color: #303437; }
+.icon-canva  { background: rgba(232, 118, 58, 0.12); color: #E8763A; }
+
+.folder-title-box {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.folder-badge-num {
   font-size: 9px;
   font-weight: 700;
   letter-spacing: 0.18em;
   color: var(--brand-verde-oliva);
   text-transform: uppercase;
-  margin-bottom: 2px;
 }
 
-.folder-card-title {
-  font-size: 15px;
+.canva-badge {
+  color: #E8763A;
+}
+
+.folder-title-text {
+  font-size: 14.5px;
   font-weight: 700;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.03em;
   color: var(--brand-azul-petroleo);
   margin: 0;
 }
 
-.folder-card-block {
+.folder-body-content {
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 8px;
 }
 
-.folder-block-label {
+.info-row {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.info-label {
   font-size: 10px;
   font-weight: 700;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.12em;
   color: var(--brand-verde-oliva);
   text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.info-desc {
+  font-size: 12.5px;
+  line-height: 1.48;
+  color: var(--brand-chumbo);
+  font-weight: 300;
+  margin: 0;
+}
+
+.folder-tags-footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: auto;
+  padding-top: 4px;
+}
+
+.file-tag {
+  font-size: 10.5px;
+  font-weight: 600;
+  padding: 3px 9px;
+  border-radius: 5px;
+  background-color: rgba(76, 100, 112, 0.07);
+  color: var(--brand-azul-petroleo);
+  border: 1px solid rgba(76, 100, 112, 0.12);
+  transition: background 0.2s ease;
+}
+
+.canva-tag {
+  background-color: rgba(232, 118, 58, 0.1);
+  color: #E8763A;
+  border-color: rgba(232, 118, 58, 0.25);
+}
+
+.folder-card-pro:hover .file-tag {
+  background-color: rgba(76, 100, 112, 0.12);
 }
 
 .folder-block-text {
