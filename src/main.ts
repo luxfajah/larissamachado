@@ -5,8 +5,12 @@
  */
 
 import './index.css';
+// @ts-ignore
+import { initFlipbook } from './livreto';
 
 document.addEventListener('DOMContentLoaded', () => {
+  initFlipbook();
+
   const slides = document.querySelectorAll('.slide');
   const totalSlides = slides.length;
   let currentSlideIndex = 0;
