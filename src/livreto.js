@@ -1,5 +1,5 @@
 // ==========================================================================
-// REALISTIC 3D VIRTUAL FLIPBOOK (CLOSED COVER INITIAL STATE + 3D PAGE CURL)
+// REALISTIC 3D VIRTUAL FLIPBOOK ENGINE (COVVER.COM FULLSCREEN & 3D EFFECTS)
 // ==========================================================================
 
 export const bookletPages = [
@@ -151,7 +151,7 @@ export function initFlipbook() {
     turnLeaf.appendChild(shadow);
     book.appendChild(turnLeaf);
 
-    // Dynamic 3D curl animation
+    // Covver style dynamic 3D rotation & arc shadow
     requestAnimationFrame(() => {
       turnLeaf.style.transform = 'rotateY(-180deg) scale(0.98)';
       setTimeout(() => {
@@ -294,16 +294,41 @@ export function initFlipbook() {
   if (prevBtn) prevBtn.onclick = turnPrev;
   if (nextBtn) nextBtn.onclick = turnNext;
 
+  // Fullscreen Handler
   if (fullscreenBtn) {
     fullscreenBtn.onclick = () => {
       const slide = document.getElementById('slide-livreto');
+      if (!slide) return;
+
       if (!document.fullscreenElement) {
-        slide?.requestFullscreen();
+        if (slide.requestFullscreen) {
+          slide.requestFullscreen();
+        } else if (slide.webkitRequestFullscreen) {
+          slide.webkitRequestFullscreen();
+        }
       } else {
-        document.exitFullscreen();
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) {
+          document.webkitExitFullscreen();
+        }
       }
     };
   }
+
+  // Fullscreen state listener
+  const onFullscreenChange = () => {
+    const slide = document.getElementById('slide-livreto');
+    if (!slide) return;
+    if (document.fullscreenElement === slide || document.webkitFullscreenElement === slide) {
+      slide.classList.add('is-fullscreen');
+    } else {
+      slide.classList.remove('is-fullscreen');
+    }
+  };
+
+  document.addEventListener('fullscreenchange', onFullscreenChange);
+  document.addEventListener('webkitfullscreenchange', onFullscreenChange);
 
   if (thumbsToggleBtn && thumbsDrawer) {
     thumbsToggleBtn.onclick = () => {
