@@ -1,5 +1,5 @@
 // ==========================================================================
-// REAL 3D VIRTUAL FLIPBOOK ENGINE (20x20cm SQUARE PAGES)
+// REALISTIC 3D VIRTUAL FLIPBOOK (CLOSED COVER INITIAL STATE + 3D PAGE CURL)
 // ==========================================================================
 
 export const bookletPages = [
@@ -21,7 +21,7 @@ export const bookletPages = [
   { src: './livreto/Contra Capa.jpg', title: 'Contra Capa' },
 ];
 
-let currentSpread = 0; // 0 to 8
+let currentSpread = 0; // 0 = Closed Front Cover, 1..7 = Open Spreads, 8 = Closed Back Cover
 let isTurning = false;
 
 export function initFlipbook() {
@@ -38,66 +38,83 @@ export function initFlipbook() {
 
   const totalSpreads = 9;
 
-  // Render static spread layout
   function renderBook() {
     container.innerHTML = '';
 
     const book = document.createElement('div');
-    book.className = 'real-flipbook-3d';
+    book.className = `real-flipbook-3d ${currentSpread === 0 ? 'is-closed-front' : ''} ${currentSpread === totalSpreads - 1 ? 'is-closed-back' : ''}`;
 
-    // Left base page
-    const leftBase = document.createElement('div');
-    leftBase.className = 'page-leaf base-leaf left-leaf';
-    const leftImg = getPageForSpread(currentSpread, 'left');
-    if (leftImg) {
+    if (currentSpread === 0) {
+      // CLOSED FRONT COVER: Single Cover Page Centered
+      const coverLeaf = document.createElement('div');
+      coverLeaf.className = 'page-leaf single-cover-leaf right-leaf cover-closed';
       const img = document.createElement('img');
-      img.src = leftImg.src;
-      img.alt = leftImg.title;
-      leftBase.appendChild(img);
-      leftBase.addEventListener('click', turnPrev);
+      img.src = bookletPages[0].src;
+      img.alt = bookletPages[0].title;
+      coverLeaf.appendChild(img);
+      
+      const clickBadge = document.createElement('div');
+      clickBadge.className = 'cover-open-badge';
+      clickBadge.innerHTML = '<span>Clique para abrir o livreto</span> →';
+      coverLeaf.appendChild(clickBadge);
+
+      coverLeaf.addEventListener('click', turnNext);
+      book.appendChild(coverLeaf);
+    } else if (currentSpread === totalSpreads - 1) {
+      // CLOSED BACK COVER: Single Back Cover Centered
+      const backLeaf = document.createElement('div');
+      backLeaf.className = 'page-leaf single-cover-leaf left-leaf cover-closed';
+      const img = document.createElement('img');
+      img.src = bookletPages[15].src;
+      img.alt = bookletPages[15].title;
+      backLeaf.appendChild(img);
+
+      backLeaf.addEventListener('click', turnPrev);
+      book.appendChild(backLeaf);
     } else {
-      leftBase.classList.add('blank-leaf');
+      // OPEN BOOK: Dual Pages Side-by-Side
+      const leftBase = document.createElement('div');
+      leftBase.className = 'page-leaf base-leaf left-leaf';
+      const leftImg = getPageForSpread(currentSpread, 'left');
+      if (leftImg) {
+        const img = document.createElement('img');
+        img.src = leftImg.src;
+        img.alt = leftImg.title;
+        leftBase.appendChild(img);
+        leftBase.addEventListener('click', turnPrev);
+      }
+
+      const rightBase = document.createElement('div');
+      rightBase.className = 'page-leaf base-leaf right-leaf';
+      const rightImg = getPageForSpread(currentSpread, 'right');
+      if (rightImg) {
+        const img = document.createElement('img');
+        img.src = rightImg.src;
+        img.alt = rightImg.title;
+        rightBase.appendChild(img);
+        rightBase.addEventListener('click', turnNext);
+      }
+
+      const spine = document.createElement('div');
+      spine.className = 'book-3d-spine';
+
+      book.appendChild(leftBase);
+      book.appendChild(spine);
+      book.appendChild(rightBase);
     }
 
-    // Right base page
-    const rightBase = document.createElement('div');
-    rightBase.className = 'page-leaf base-leaf right-leaf';
-    const rightImg = getPageForSpread(currentSpread, 'right');
-    if (rightImg) {
-      const img = document.createElement('img');
-      img.src = rightImg.src;
-      img.alt = rightImg.title;
-      rightBase.appendChild(img);
-      rightBase.addEventListener('click', turnNext);
-    } else {
-      rightBase.classList.add('blank-leaf');
-    }
-
-    // Spine center shadow
-    const spine = document.createElement('div');
-    spine.className = 'book-3d-spine';
-
-    book.appendChild(leftBase);
-    book.appendChild(spine);
-    book.appendChild(rightBase);
     container.appendChild(book);
-
     updateUI();
   }
 
   function getPageForSpread(spread, side) {
-    if (spread === 0) {
-      return side === 'right' ? bookletPages[0] : null;
-    }
-    if (spread === totalSpreads - 1) {
-      return side === 'left' ? bookletPages[15] : null;
-    }
+    if (spread <= 0 || spread >= totalSpreads - 1) return null;
     const leftIdx = (spread - 1) * 2 + 1;
     const rightIdx = leftIdx + 1;
     return side === 'left' ? bookletPages[leftIdx] : bookletPages[rightIdx];
   }
 
-  // Turn to Next Spread with 3D Leaf Rotation
+  // Realistic 3D Turn Next
   function turnNext() {
     if (isTurning || currentSpread >= totalSpreads - 1) return;
     isTurning = true;
@@ -105,13 +122,12 @@ export function initFlipbook() {
     const book = container.querySelector('.real-flipbook-3d');
     if (!book) return;
 
-    // Create 3D turning leaf moving from Right (0deg) to Left (-180deg)
     const turnLeaf = document.createElement('div');
     turnLeaf.className = 'page-leaf turning-leaf turn-forward';
 
     const frontFace = document.createElement('div');
     frontFace.className = 'leaf-face leaf-front';
-    const frontImg = getPageForSpread(currentSpread, 'right');
+    const frontImg = currentSpread === 0 ? bookletPages[0] : getPageForSpread(currentSpread, 'right');
     if (frontImg) {
       const img = document.createElement('img');
       img.src = frontImg.src;
@@ -120,34 +136,37 @@ export function initFlipbook() {
 
     const backFace = document.createElement('div');
     backFace.className = 'leaf-face leaf-back';
-    const backImg = getPageForSpread(currentSpread + 1, 'left');
+    const backImg = getPageForSpread(currentSpread + 1, 'left') || bookletPages[15];
     if (backImg) {
       const img = document.createElement('img');
       img.src = backImg.src;
       backFace.appendChild(img);
     }
 
-    const leafShadow = document.createElement('div');
-    leafShadow.className = 'turning-leaf-shadow';
+    const shadow = document.createElement('div');
+    shadow.className = 'turning-leaf-shadow';
 
     turnLeaf.appendChild(frontFace);
     turnLeaf.appendChild(backFace);
-    turnLeaf.appendChild(leafShadow);
+    turnLeaf.appendChild(shadow);
     book.appendChild(turnLeaf);
 
-    // Trigger 3D rotation
+    // Dynamic 3D curl animation
     requestAnimationFrame(() => {
-      turnLeaf.style.transform = 'rotateY(-180deg)';
+      turnLeaf.style.transform = 'rotateY(-180deg) scale(0.98)';
+      setTimeout(() => {
+        turnLeaf.style.transform = 'rotateY(-180deg) scale(1)';
+      }, 300);
     });
 
     setTimeout(() => {
       currentSpread++;
       renderBook();
       isTurning = false;
-    }, 550);
+    }, 600);
   }
 
-  // Turn to Prev Spread with 3D Leaf Rotation
+  // Realistic 3D Turn Prev
   function turnPrev() {
     if (isTurning || currentSpread <= 0) return;
     isTurning = true;
@@ -155,14 +174,13 @@ export function initFlipbook() {
     const book = container.querySelector('.real-flipbook-3d');
     if (!book) return;
 
-    // Create 3D turning leaf moving from Left (-180deg) to Right (0deg)
     const turnLeaf = document.createElement('div');
     turnLeaf.className = 'page-leaf turning-leaf turn-backward';
     turnLeaf.style.transform = 'rotateY(-180deg)';
 
     const frontFace = document.createElement('div');
     frontFace.className = 'leaf-face leaf-front';
-    const frontImg = getPageForSpread(currentSpread - 1, 'right');
+    const frontImg = getPageForSpread(currentSpread - 1, 'right') || bookletPages[0];
     if (frontImg) {
       const img = document.createElement('img');
       img.src = frontImg.src;
@@ -178,24 +196,26 @@ export function initFlipbook() {
       backFace.appendChild(img);
     }
 
-    const leafShadow = document.createElement('div');
-    leafShadow.className = 'turning-leaf-shadow';
+    const shadow = document.createElement('div');
+    shadow.className = 'turning-leaf-shadow';
 
     turnLeaf.appendChild(frontFace);
     turnLeaf.appendChild(backFace);
-    turnLeaf.appendChild(leafShadow);
+    turnLeaf.appendChild(shadow);
     book.appendChild(turnLeaf);
 
-    // Trigger 3D rotation
     requestAnimationFrame(() => {
-      turnLeaf.style.transform = 'rotateY(0deg)';
+      turnLeaf.style.transform = 'rotateY(0deg) scale(0.98)';
+      setTimeout(() => {
+        turnLeaf.style.transform = 'rotateY(0deg) scale(1)';
+      }, 300);
     });
 
     setTimeout(() => {
       currentSpread--;
       renderBook();
       isTurning = false;
-    }, 550);
+    }, 600);
   }
 
   function goToSpread(targetSpread) {
@@ -210,9 +230,9 @@ export function initFlipbook() {
 
     if (counterEl) {
       if (currentSpread === 0) {
-        counterEl.textContent = 'Capa Frontal (1 de 16)';
+        counterEl.textContent = 'Livreto Fechado • Capa Frontal';
       } else if (currentSpread === totalSpreads - 1) {
-        counterEl.textContent = 'Contra Capa (16 de 16)';
+        counterEl.textContent = 'Livreto Fechado • Contra Capa';
       } else {
         const p1 = (currentSpread - 1) * 2 + 2;
         const p2 = p1 + 1;
@@ -223,7 +243,7 @@ export function initFlipbook() {
     highlightThumb();
   }
 
-  // Thumbnails List
+  // Thumbnails
   if (thumbsList && thumbsList.children.length === 0) {
     bookletPages.forEach((page, idx) => {
       const item = document.createElement('div');
@@ -270,7 +290,7 @@ export function initFlipbook() {
     }
   }
 
-  // Listeners
+  // Event Listeners
   if (prevBtn) prevBtn.onclick = turnPrev;
   if (nextBtn) nextBtn.onclick = turnNext;
 
