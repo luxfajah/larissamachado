@@ -19,59 +19,26 @@ document.addEventListener('DOMContentLoaded', () => {
   const nextBtn = document.getElementById('btn-next');
   const presentationContainer = document.querySelector('.presentation-container') as HTMLElement;
 
-  // Viewport scaling: scale 1920x1080 container to fit viewport or adapt responsively for mobile
+  // Responsive Viewport: Occupy 100% width and height like a web application
   function handleResize() {
     if (!presentationContainer) return;
     
-    const windowWidth = window.innerWidth;
-    const windowHeight = window.innerHeight;
-    
-    // Scale fixed 16:9 canvas in landscape mode (both desktop and mobile!)
-    const isLandscape = windowWidth > windowHeight;
-    
-    if (isLandscape) {
-      const targetWidth = 1920;
-      const targetHeight = 1080;
-      const scale = Math.min(windowWidth / targetWidth, windowHeight / targetHeight);
-      
-      presentationContainer.style.width = `${targetWidth}px`;
-      presentationContainer.style.height = `${targetHeight}px`;
-      presentationContainer.style.top = '50%';
-      presentationContainer.style.left = '50%';
-      presentationContainer.style.transform = `translate(-50%, -50%) scale(${scale})`;
-      presentationContainer.classList.remove('mobile-mode');
+    presentationContainer.style.width = '100%';
+    presentationContainer.style.height = '100%';
+    presentationContainer.style.top = '0';
+    presentationContainer.style.left = '0';
+    presentationContainer.style.transform = 'none';
 
-      // Update full-bleed images to fill 100% of screen width and height
-      const fullBleedImgs = document.querySelectorAll('.full-bleed-slide-img');
-      const imgWidth = windowWidth / scale;
-      const imgHeight = windowHeight / scale;
-      
-      fullBleedImgs.forEach((img) => {
-        const htmlImg = img as HTMLElement;
-        htmlImg.style.width = `${imgWidth}px`;
-        htmlImg.style.height = `${imgHeight}px`;
-        htmlImg.style.left = `${(targetWidth - imgWidth) / 2}px`;
-        htmlImg.style.top = `${(targetHeight - imgHeight) / 2}px`;
-      });
-    } else {
-      // Mobile/tablet portrait adaptive fallback mode (blocked by orientation overlay)
-      presentationContainer.style.width = '100%';
-      presentationContainer.style.height = '100%';
-      presentationContainer.style.top = '0';
-      presentationContainer.style.left = '0';
-      presentationContainer.style.transform = 'none';
-      presentationContainer.classList.add('mobile-mode');
-
-      // Reset styles
-      const fullBleedImgs = document.querySelectorAll('.full-bleed-slide-img');
-      fullBleedImgs.forEach((img) => {
-        const htmlImg = img as HTMLElement;
-        htmlImg.style.width = '100%';
-        htmlImg.style.height = '100%';
-        htmlImg.style.left = '0';
-        htmlImg.style.top = '0';
-      });
-    }
+    // Ensure full-bleed mockup/gallery images fill 100% of screen without margins
+    const fullBleedImgs = document.querySelectorAll('.full-bleed-slide-img, .mockup-full-bleed-img');
+    fullBleedImgs.forEach((img) => {
+      const htmlImg = img as HTMLElement;
+      htmlImg.style.width = '100%';
+      htmlImg.style.height = '100%';
+      htmlImg.style.left = '0';
+      htmlImg.style.top = '0';
+      htmlImg.style.objectFit = 'cover';
+    });
   }
 
   // Single Page 1015 Gallery Logic (No animations, instant step change)
