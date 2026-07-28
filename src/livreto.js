@@ -1,24 +1,24 @@
 // ==========================================================================
-// REALISTIC 3D VIRTUAL FLIPBOOK ENGINE (COVVER.COM FULLSCREEN & 3D EFFECTS)
+// REALISTIC 3D VIRTUAL FLIPBOOK ENGINE (EXACT GABARITO PAGINATION MATCH)
 // ==========================================================================
 
 export const bookletPages = [
-  { src: './livreto/Capa.jpg', title: 'Capa Frontal (Pág 01)', pageNum: 1 },
-  { src: './livreto/Verso capa.jpg', title: 'Verso da Capa (Pág 02)', pageNum: 2 },
-  { src: './livreto/1.jpg', title: 'Página 03', pageNum: 3 },
-  { src: './livreto/2.jpg', title: 'Página 04', pageNum: 4 },
-  { src: './livreto/3.jpg', title: 'Página 05', pageNum: 5 },
-  { src: './livreto/4.jpg', title: 'Página 06', pageNum: 6 },
-  { src: './livreto/5.jpg', title: 'Página 07', pageNum: 7 },
-  { src: './livreto/6.jpg', title: 'Página 08', pageNum: 8 },
-  { src: './livreto/7.jpg', title: 'Página 09', pageNum: 9 },
-  { src: './livreto/8.jpg', title: 'Página 10', pageNum: 10 },
-  { src: './livreto/9.jpg', title: 'Página 11', pageNum: 11 },
-  { src: './livreto/10.jpg', title: 'Página 12', pageNum: 12 },
-  { src: './livreto/11.jpg', title: 'Página 13', pageNum: 13 },
-  { src: './livreto/12.jpg', title: 'Página 14', pageNum: 14 },
-  { src: './livreto/Frente Contra Capa.jpg', title: 'Frente Contra Capa (Pág 15)', pageNum: 15 },
-  { src: './livreto/Contra Capa.jpg', title: 'Contra Capa (Pág 16)', pageNum: 16 },
+  { src: './livreto/Capa.jpg', title: 'Capa Frontal', label: 'Capa' },
+  { src: './livreto/Verso capa.jpg', title: 'Verso da Capa', label: 'Verso Capa' },
+  { src: './livreto/1.jpg', title: 'Guia Blefaroplastia (Pág 01)', label: 'Pág 01' },
+  { src: './livreto/2.jpg', title: 'Introdução Médica (Pág 02)', label: 'Pág 02' },
+  { src: './livreto/3.jpg', title: 'Atenção! Rosto & Água (Pág 03)', label: 'Pág 03' },
+  { src: './livreto/4.jpg', title: 'Higienização (Pág 04)', label: 'Pág 04' },
+  { src: './livreto/5.jpg', title: 'Cuidados com Crostas (Pág 05)', label: 'Pág 05' },
+  { src: './livreto/6.jpg', title: 'O que NÃO utilizar (Pág 06)', label: 'Pág 06' },
+  { src: './livreto/7.jpg', title: 'O que fazer pós-cirurgia 1-4 (Pág 07)', label: 'Pág 07' },
+  { src: './livreto/8.jpg', title: 'Orientações 5-10 (Pág 08)', label: 'Pág 08' },
+  { src: './livreto/9.jpg', title: 'Orientações 11-16 (Pág 09)', label: 'Pág 09' },
+  { src: './livreto/10.jpg', title: 'Lembre-se (Pág 10)', label: 'Pág 10' },
+  { src: './livreto/11.jpg', title: 'Após retirada dos pontos (Pág 11)', label: 'Pág 11' },
+  { src: './livreto/12.jpg', title: 'Aplicação da pomada (Pág 12)', label: 'Pág 12' },
+  { src: './livreto/Frente Contra Capa.jpg', title: 'Frente Contra Capa', label: 'Verso Contra' },
+  { src: './livreto/Contra Capa.jpg', title: 'Contra Capa', label: 'Contra Capa' },
 ];
 
 let currentSpread = 0; // 0 to 8
@@ -278,13 +278,19 @@ export function initFlipbook() {
 
     if (counterEl) {
       if (currentSpread === 0) {
-        counterEl.textContent = 'Livreto Fechado • Capa (Pág. 01)';
-      } else if (currentSpread === totalSpreads - 1) {
-        counterEl.textContent = 'Livreto Fechado • Contra Capa (Pág. 16)';
+        counterEl.textContent = 'Livreto Fechado • Capa Frontal';
+      } else if (currentSpread === 1) {
+        counterEl.textContent = 'Verso da Capa • Página 01 (Título)';
+      } else if (currentSpread === 7) {
+        counterEl.textContent = 'Página 12 • Verso da Contra Capa';
+      } else if (currentSpread === 8) {
+        counterEl.textContent = 'Livreto Fechado • Contra Capa';
       } else {
-        const leftPageNum = (currentSpread - 1) * 2 + 2;
+        const leftPageNum = (currentSpread - 1) * 2;
         const rightPageNum = leftPageNum + 1;
-        counterEl.textContent = `Páginas ${leftPageNum} - ${rightPageNum} de 16`;
+        const p1Str = leftPageNum < 10 ? `0${leftPageNum}` : `${leftPageNum}`;
+        const p2Str = rightPageNum < 10 ? `0${rightPageNum}` : `${rightPageNum}`;
+        counterEl.textContent = `Páginas ${p1Str} - ${p2Str} de 12 (Spread 20×20cm)`;
       }
     }
 
@@ -303,7 +309,7 @@ export function initFlipbook() {
       img.alt = page.title;
 
       const label = document.createElement('span');
-      label.textContent = idx === 0 ? 'Capa' : idx === 15 ? 'Verso' : `Pág ${idx + 1}`;
+      label.textContent = page.label;
 
       item.appendChild(img);
       item.appendChild(label);
@@ -311,7 +317,7 @@ export function initFlipbook() {
       item.addEventListener('click', () => {
         let spread = 0;
         if (idx === 0) spread = 0;
-        else if (idx === 15) spread = totalSpreads - 1;
+        else if (idx === 15) spread = 8;
         else spread = Math.floor((idx - 1) / 2) + 1;
 
         goToSpread(spread);
@@ -328,7 +334,7 @@ export function initFlipbook() {
 
     let activeIdx = 0;
     if (currentSpread === 0) activeIdx = 0;
-    else if (currentSpread === totalSpreads - 1) activeIdx = 15;
+    else if (currentSpread === 8) activeIdx = 15;
     else activeIdx = (currentSpread - 1) * 2 + 1;
 
     const activeItem = thumbsList.querySelector(`[data-page-idx="${activeIdx}"]`);
