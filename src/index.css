@@ -4466,3 +4466,45 @@ body.hud-dark .key-cap {
   object-position: center;
   display: block;
 }
+
+/* ==========================================================================
+   DNA DA MARCA: LAYOUT EDITORIAL COM BANNER HORIZONTAL DE IMAGEM
+   ========================================================================== */
+.dna-horizontal-layout {
+  display: flex !important;
+  flex-direction: column !important;
+  width: 100% !important;
+  height: 100% !important;
+  padding: 50px 80px !important;
+  box-sizing: border-box !important;
+  justify-content: flex-start !important;
+  overflow-y: auto !important;
+}
+
+.dna-horizontal-image-banner {
+  position: relative;
+  width: 100%;
+  height: 220px;
+  border-radius: 16px;
+  overflow: hidden;
+  margin: 14px 0 22px 0;
+  box-shadow: 0 12px 32px rgba(48, 52, 55, 0.1);
+  border: 1px solid rgba(114, 113, 96, 0.15);
+  flex-shrink: 0;
+}
+
+.dna-horizontal-image-banner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 35%;
+  display: block;
+}
+
+.dna-grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  width: 100%;
+  align-items: stretch;
+}
