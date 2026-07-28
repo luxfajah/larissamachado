@@ -23,6 +23,8 @@ export const bookletPages = [
 
 let currentSpread = 0; // 0 = Closed Front Cover, 1..7 = Open Spreads, 8 = Closed Back Cover
 let isTurning = false;
+let isZoomed = false;
+let showPrintGrid = false;
 
 export function initFlipbook() {
   const container = document.getElementById('flipbook-viewport');
@@ -30,6 +32,8 @@ export function initFlipbook() {
   const nextBtn = document.getElementById('flipbook-next');
   const counterEl = document.getElementById('flipbook-counter');
   const fullscreenBtn = document.getElementById('flipbook-fullscreen');
+  const zoomBtn = document.getElementById('flipbook-zoom');
+  const gridToggleBtn = document.getElementById('flipbook-grid-toggle');
   const thumbsToggleBtn = document.getElementById('flipbook-thumbs-toggle');
   const thumbsDrawer = document.getElementById('flipbook-thumbs-drawer');
   const thumbsList = document.getElementById('flipbook-thumbs-list');
@@ -42,7 +46,7 @@ export function initFlipbook() {
     container.innerHTML = '';
 
     const book = document.createElement('div');
-    book.className = `real-flipbook-3d ${currentSpread === 0 ? 'is-closed-front' : ''} ${currentSpread === totalSpreads - 1 ? 'is-closed-back' : ''}`;
+    book.className = `real-flipbook-3d ${currentSpread === 0 ? 'is-closed-front' : ''} ${currentSpread === totalSpreads - 1 ? 'is-closed-back' : ''} ${isZoomed ? 'is-zoomed' : ''} ${showPrintGrid ? 'show-print-guides' : ''}`;
 
     if (currentSpread === 0) {
       // CLOSED FRONT COVER: Single Cover Page Centered
@@ -58,6 +62,8 @@ export function initFlipbook() {
       clickBadge.innerHTML = '<span>Clique para abrir o livreto</span> →';
       coverLeaf.appendChild(clickBadge);
 
+      addPrintGuides(coverLeaf);
+
       coverLeaf.addEventListener('click', turnNext);
       book.appendChild(coverLeaf);
     } else if (currentSpread === totalSpreads - 1) {
@@ -69,10 +75,12 @@ export function initFlipbook() {
       img.alt = bookletPages[15].title;
       backLeaf.appendChild(img);
 
+      addPrintGuides(backLeaf);
+
       backLeaf.addEventListener('click', turnPrev);
       book.appendChild(backLeaf);
     } else {
-      // OPEN BOOK: Dual Pages Side-by-Side
+      // OPEN BOOK: Dual Pages Side-by-Side (20x20cm Spread)
       const leftBase = document.createElement('div');
       leftBase.className = 'page-leaf base-leaf left-leaf';
       const leftImg = getPageForSpread(currentSpread, 'left');
@@ -81,6 +89,7 @@ export function initFlipbook() {
         img.src = leftImg.src;
         img.alt = leftImg.title;
         leftBase.appendChild(img);
+        addPrintGuides(leftBase);
         leftBase.addEventListener('click', turnPrev);
       }
 
@@ -92,6 +101,7 @@ export function initFlipbook() {
         img.src = rightImg.src;
         img.alt = rightImg.title;
         rightBase.appendChild(img);
+        addPrintGuides(rightBase);
         rightBase.addEventListener('click', turnNext);
       }
 
@@ -105,6 +115,13 @@ export function initFlipbook() {
 
     container.appendChild(book);
     updateUI();
+  }
+
+  function addPrintGuides(pageEl) {
+    const bleedOverlay = document.createElement('div');
+    bleedOverlay.className = 'print-bleed-overlay';
+    bleedOverlay.innerHTML = '<span class="bleed-label">Sangria 3mm</span>';
+    pageEl.appendChild(bleedOverlay);
   }
 
   function getPageForSpread(spread, side) {
@@ -151,7 +168,7 @@ export function initFlipbook() {
     turnLeaf.appendChild(shadow);
     book.appendChild(turnLeaf);
 
-    // Covver style dynamic 3D rotation & arc shadow
+    // Covver style 3D curl animation
     requestAnimationFrame(() => {
       turnLeaf.style.transform = 'rotateY(-180deg) scale(0.98)';
       setTimeout(() => {
@@ -230,13 +247,13 @@ export function initFlipbook() {
 
     if (counterEl) {
       if (currentSpread === 0) {
-        counterEl.textContent = 'Livreto Fechado • Capa Frontal';
+        counterEl.textContent = 'Livreto Fechado • Capa Frontal (20×20cm)';
       } else if (currentSpread === totalSpreads - 1) {
-        counterEl.textContent = 'Livreto Fechado • Contra Capa';
+        counterEl.textContent = 'Livreto Fechado • Contra Capa (20×20cm)';
       } else {
         const p1 = (currentSpread - 1) * 2 + 2;
         const p2 = p1 + 1;
-        counterEl.textContent = `Páginas ${p1} - ${p2} de 16`;
+        counterEl.textContent = `Páginas ${p1} - ${p2} de 16 (Spread 20×20cm)`;
       }
     }
 
@@ -294,6 +311,28 @@ export function initFlipbook() {
   if (prevBtn) prevBtn.onclick = turnPrev;
   if (nextBtn) nextBtn.onclick = turnNext;
 
+  if (zoomBtn) {
+    zoomBtn.onclick = () => {
+      isZoomed = !isZoomed;
+      zoomBtn.classList.toggle('active', isZoomed);
+      const book = container.querySelector('.real-flipbook-3d');
+      if (book) {
+        book.classList.toggle('is-zoomed', isZoomed);
+      }
+    };
+  }
+
+  if (gridToggleBtn) {
+    gridToggleBtn.onclick = () => {
+      showPrintGrid = !showPrintGrid;
+      gridToggleBtn.classList.toggle('active', showPrintGrid);
+      const book = container.querySelector('.real-flipbook-3d');
+      if (book) {
+        book.classList.toggle('show-print-guides', showPrintGrid);
+      }
+    };
+  }
+
   // Fullscreen Handler
   if (fullscreenBtn) {
     fullscreenBtn.onclick = () => {
@@ -316,7 +355,6 @@ export function initFlipbook() {
     };
   }
 
-  // Fullscreen state listener
   const onFullscreenChange = () => {
     const slide = document.getElementById('slide-livreto');
     if (!slide) return;
