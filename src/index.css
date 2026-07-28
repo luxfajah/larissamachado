@@ -1,5 +1,5 @@
 @import url('https://api.fontshare.com/v2/css?f[]=general-sans@200,300,400,500,600,700&f[]=satoshi@300,400,500,700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@1,400;1,600&display=swap');
 
 /* ==========================================================================
    DESIGN SYSTEM: Branding Presentation Template (Dra. Larissa Machado)
@@ -4048,4 +4048,140 @@ body.hud-dark .key-cap {
   background-repeat: no-repeat !important;
 }
 
+/* RECONSTRUCTED COLOR PALETTE SHOWCASE (REFERENCE IMAGE STYLED) */
+.color-palette-showcase-layout {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  width: 100% !important;
+  height: 100% !important;
+  padding: 60px 100px !important;
+  gap: 60px !important;
+  box-sizing: border-box !important;
+}
 
+.palette-editorial-left {
+  flex: 0 0 38%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 16px;
+}
+
+.palette-breadcrumb {
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  color: var(--brand-verde-oliva);
+  text-transform: uppercase;
+}
+
+.palette-display-title {
+  font-family: var(--font-system);
+  font-size: 64px;
+  font-weight: 700;
+  line-height: 0.95;
+  color: var(--brand-azul-petroleo);
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+.palette-display-title .serif-italic {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--brand-chumbo);
+  letter-spacing: 0;
+}
+
+.palette-editorial-desc {
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--brand-chumbo);
+  font-weight: 300;
+  max-width: 440px;
+  margin: 8px 0 0 0;
+  opacity: 0.9;
+}
+
+/* RIGHT COLUMN: STACKED OVERLAPPING PILL CARDS AT ALTERNATING ANGLES */
+.palette-pills-stack-right {
+  flex: 0 0 56%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 20px 10px;
+}
+
+.palette-pill-card {
+  width: 100%;
+  max-width: 600px;
+  padding: 24px 38px;
+  border-radius: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  box-shadow: 0 16px 36px rgba(48, 52, 55, 0.12);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  margin-top: -16px;
+  cursor: pointer;
+}
+
+.palette-pill-card:first-child {
+  margin-top: 0;
+}
+
+/* Individual Pill Color Schemes & Alternating Rotations */
+.pill-petrol {
+  background-color: #4C6470;
+  color: #FAF9F6;
+  transform: rotate(-3.5deg);
+  z-index: 4;
+}
+
+.pill-areia {
+  background-color: #F4F0EA;
+  color: #303437;
+  border: 1px solid rgba(76, 100, 112, 0.12);
+  transform: rotate(3.2deg);
+  z-index: 3;
+}
+
+.pill-oliva {
+  background-color: #727160;
+  color: #FAF9F6;
+  transform: rotate(-2.2deg);
+  z-index: 2;
+}
+
+.pill-chumbo {
+  background-color: #303437;
+  color: #F4F0EA;
+  transform: rotate(3.8deg);
+  z-index: 1;
+}
+
+/* Hover elevation effect */
+.palette-pill-card:hover {
+  transform: translateY(-8px) scale(1.02) rotate(0deg) !important;
+  z-index: 10 !important;
+  box-shadow: 0 24px 48px rgba(48, 52, 55, 0.18);
+}
+
+.pill-head-title {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.pill-desc-text {
+  font-size: 13.5px;
+  line-height: 1.5;
+  font-weight: 300;
+  margin: 0;
+  opacity: 0.92;
+}
