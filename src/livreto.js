@@ -21,17 +21,6 @@ export const bookletPages = [
   { src: './livreto/Contra Capa.jpg', title: 'Contra Capa (Pág 16)', pageNum: 16 },
 ];
 
-// Spreads:
-// Spread 0: Left = null, Right = Page 0 (Capa.jpg) -> Closed Front
-// Spread 1: Left = Page 1 (Verso capa), Right = Page 2 (1.jpg) [Págs 2-3]
-// Spread 2: Left = Page 3 (2.jpg), Right = Page 4 (3.jpg) [Págs 4-5]
-// Spread 3: Left = Page 5 (4.jpg), Right = Page 6 (5.jpg) [Págs 6-7]
-// Spread 4: Left = Page 7 (6.jpg), Right = Page 8 (7.jpg) [Págs 8-9]
-// Spread 5: Left = Page 9 (8.jpg), Right = Page 10 (9.jpg) [Págs 10-11]
-// Spread 6: Left = Page 11 (10.jpg), Right = Page 12 (11.jpg) [Págs 12-13]
-// Spread 7: Left = Page 13 (12.jpg), Right = Page 14 (Frente Contra Capa) [Págs 14-15]
-// Spread 8: Left = Page 15 (Contra Capa), Right = null -> Closed Back
-
 let currentSpread = 0; // 0 to 8
 let isTurning = false;
 let isZoomed = false;
@@ -142,7 +131,7 @@ export function initFlipbook() {
     return side === 'left' ? bookletPages[leftIdx] : bookletPages[rightIdx];
   }
 
-  // Realistic 3D Turn Next
+  // Realistic 3D Turn Next (Forward Turn with Physical Paper Lift & Dual-Sided Print Simulation)
   function turnNext() {
     if (isTurning || currentSpread >= totalSpreads - 1) return;
     isTurning = true;
@@ -153,6 +142,7 @@ export function initFlipbook() {
     const turnLeaf = document.createElement('div');
     turnLeaf.className = 'page-leaf turning-leaf turn-forward';
 
+    // Front Face (Right Page being lifted)
     const frontFace = document.createElement('div');
     frontFace.className = 'leaf-face leaf-front';
     const frontImg = currentSpread === 0 ? bookletPages[0] : getPageForSpread(currentSpread, 'right');
@@ -162,6 +152,7 @@ export function initFlipbook() {
       frontFace.appendChild(img);
     }
 
+    // Back Face (Reverse side of the same physical paper sheet)
     const backFace = document.createElement('div');
     backFace.className = 'leaf-face leaf-back';
     const backImg = getPageForSpread(currentSpread + 1, 'left') || bookletPages[15];
@@ -179,22 +170,19 @@ export function initFlipbook() {
     turnLeaf.appendChild(shadow);
     book.appendChild(turnLeaf);
 
-    // Covver style 3D curl animation
+    // Trigger keyframe animation for realistic physical paper lift & 3D arc bend
     requestAnimationFrame(() => {
-      turnLeaf.style.transform = 'rotateY(-180deg) scale(0.98)';
-      setTimeout(() => {
-        turnLeaf.style.transform = 'rotateY(-180deg) scale(1)';
-      }, 300);
+      turnLeaf.classList.add('animating-turn-forward');
     });
 
     setTimeout(() => {
       currentSpread++;
       renderBook();
       isTurning = false;
-    }, 600);
+    }, 680);
   }
 
-  // Realistic 3D Turn Prev
+  // Realistic 3D Turn Prev (Backward Turn)
   function turnPrev() {
     if (isTurning || currentSpread <= 0) return;
     isTurning = true;
@@ -204,8 +192,8 @@ export function initFlipbook() {
 
     const turnLeaf = document.createElement('div');
     turnLeaf.className = 'page-leaf turning-leaf turn-backward';
-    turnLeaf.style.transform = 'rotateY(-180deg)';
 
+    // Front Face (Left Page of previous spread)
     const frontFace = document.createElement('div');
     frontFace.className = 'leaf-face leaf-front';
     const frontImg = getPageForSpread(currentSpread - 1, 'right') || bookletPages[0];
@@ -215,6 +203,7 @@ export function initFlipbook() {
       frontFace.appendChild(img);
     }
 
+    // Back Face (Left Page being lifted back to the right)
     const backFace = document.createElement('div');
     backFace.className = 'leaf-face leaf-back';
     const backImg = getPageForSpread(currentSpread, 'left');
@@ -233,17 +222,14 @@ export function initFlipbook() {
     book.appendChild(turnLeaf);
 
     requestAnimationFrame(() => {
-      turnLeaf.style.transform = 'rotateY(0deg) scale(0.98)';
-      setTimeout(() => {
-        turnLeaf.style.transform = 'rotateY(0deg) scale(1)';
-      }, 300);
+      turnLeaf.classList.add('animating-turn-backward');
     });
 
     setTimeout(() => {
       currentSpread--;
       renderBook();
       isTurning = false;
-    }, 600);
+    }, 680);
   }
 
   function goToSpread(targetSpread) {

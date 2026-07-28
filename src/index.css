@@ -4859,6 +4859,45 @@ body.hud-dark .key-cap {
   transform: rotateY(-180deg);
 }
 
+/* 3D Physical Paper Arc Lift Keyframes */
+@keyframes paperFlipForward {
+  0% {
+    transform: rotateY(0deg) translateZ(0px) rotateZ(0deg);
+  }
+  30% {
+    transform: rotateY(-55deg) translateZ(45px) rotateZ(-2.5deg);
+  }
+  65% {
+    transform: rotateY(-125deg) translateZ(30px) rotateZ(-1.2deg);
+  }
+  100% {
+    transform: rotateY(-180deg) translateZ(0px) rotateZ(0deg);
+  }
+}
+
+@keyframes paperFlipBackward {
+  0% {
+    transform: rotateY(-180deg) translateZ(0px) rotateZ(0deg);
+  }
+  30% {
+    transform: rotateY(-125deg) translateZ(45px) rotateZ(2.5deg);
+  }
+  65% {
+    transform: rotateY(-55deg) translateZ(30px) rotateZ(1.2deg);
+  }
+  100% {
+    transform: rotateY(0deg) translateZ(0px) rotateZ(0deg);
+  }
+}
+
+.turning-leaf.animating-turn-forward {
+  animation: paperFlipForward 0.68s cubic-bezier(0.25, 1, 0.35, 1) forwards;
+}
+
+.turning-leaf.animating-turn-backward {
+  animation: paperFlipBackward 0.68s cubic-bezier(0.25, 1, 0.35, 1) forwards;
+}
+
 /* Front & Back Faces of the Turning Leaf */
 .leaf-face {
   position: absolute;
