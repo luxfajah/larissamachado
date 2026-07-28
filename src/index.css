@@ -4374,7 +4374,7 @@ body.hud-dark .key-cap {
   gap: 30px;
 }
 
-/* Slide 09: Persona Editorial Layout */
+/* Slide 09: Persona Editorial 3-Column Layout */
 .persona-editorial-layout {
   display: flex;
   flex-direction: column;
@@ -4386,13 +4386,24 @@ body.hud-dark .key-cap {
 
 .persona-editorial-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr 340px;
-  gap: 36px;
-  align-items: center;
-  margin-top: 24px;
+  grid-template-columns: 340px 1fr 1fr;
+  gap: 40px;
+  align-items: flex-start;
+  margin-top: 20px;
 }
 
 .persona-photo-col {
-  height: 460px;
+  height: 480px;
   width: 100%;
+}
+
+.persona-footnote-box {
+  margin-top: 16px;
+  padding: 14px 18px;
+  background: rgba(114, 113, 96, 0.08);
+  border-radius: 12px;
+  border-left: 3px solid var(--brand-verde-oliva);
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--brand-chumbo);
 }
