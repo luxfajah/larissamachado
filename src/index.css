@@ -4882,6 +4882,10 @@ body.hud-dark .key-cap {
   border-radius: 4px 0 0 4px;
 }
 
+.leaf-back img {
+  transform: scaleX(-1);
+}
+
 .turning-leaf-shadow {
   position: absolute;
   top: 0;

@@ -3,25 +3,36 @@
 // ==========================================================================
 
 export const bookletPages = [
-  { src: './livreto/Capa.jpg', title: 'Capa Frontal' },
-  { src: './livreto/Verso capa.jpg', title: 'Verso da Capa' },
-  { src: './livreto/1.jpg', title: 'Página 01' },
-  { src: './livreto/2.jpg', title: 'Página 02' },
-  { src: './livreto/3.jpg', title: 'Página 03' },
-  { src: './livreto/4.jpg', title: 'Página 04' },
-  { src: './livreto/5.jpg', title: 'Página 05' },
-  { src: './livreto/6.jpg', title: 'Página 06' },
-  { src: './livreto/7.jpg', title: 'Página 07' },
-  { src: './livreto/8.jpg', title: 'Página 08' },
-  { src: './livreto/9.jpg', title: 'Página 09' },
-  { src: './livreto/10.jpg', title: 'Página 10' },
-  { src: './livreto/11.jpg', title: 'Página 11' },
-  { src: './livreto/12.jpg', title: 'Página 12' },
-  { src: './livreto/Frente Contra Capa.jpg', title: 'Frente Contra Capa' },
-  { src: './livreto/Contra Capa.jpg', title: 'Contra Capa' },
+  { src: './livreto/Capa.jpg', title: 'Capa Frontal (Pág 01)', pageNum: 1 },
+  { src: './livreto/Verso capa.jpg', title: 'Verso da Capa (Pág 02)', pageNum: 2 },
+  { src: './livreto/1.jpg', title: 'Página 03', pageNum: 3 },
+  { src: './livreto/2.jpg', title: 'Página 04', pageNum: 4 },
+  { src: './livreto/3.jpg', title: 'Página 05', pageNum: 5 },
+  { src: './livreto/4.jpg', title: 'Página 06', pageNum: 6 },
+  { src: './livreto/5.jpg', title: 'Página 07', pageNum: 7 },
+  { src: './livreto/6.jpg', title: 'Página 08', pageNum: 8 },
+  { src: './livreto/7.jpg', title: 'Página 09', pageNum: 9 },
+  { src: './livreto/8.jpg', title: 'Página 10', pageNum: 10 },
+  { src: './livreto/9.jpg', title: 'Página 11', pageNum: 11 },
+  { src: './livreto/10.jpg', title: 'Página 12', pageNum: 12 },
+  { src: './livreto/11.jpg', title: 'Página 13', pageNum: 13 },
+  { src: './livreto/12.jpg', title: 'Página 14', pageNum: 14 },
+  { src: './livreto/Frente Contra Capa.jpg', title: 'Frente Contra Capa (Pág 15)', pageNum: 15 },
+  { src: './livreto/Contra Capa.jpg', title: 'Contra Capa (Pág 16)', pageNum: 16 },
 ];
 
-let currentSpread = 0; // 0 = Closed Front Cover, 1..7 = Open Spreads, 8 = Closed Back Cover
+// Spreads:
+// Spread 0: Left = null, Right = Page 0 (Capa.jpg) -> Closed Front
+// Spread 1: Left = Page 1 (Verso capa), Right = Page 2 (1.jpg) [Págs 2-3]
+// Spread 2: Left = Page 3 (2.jpg), Right = Page 4 (3.jpg) [Págs 4-5]
+// Spread 3: Left = Page 5 (4.jpg), Right = Page 6 (5.jpg) [Págs 6-7]
+// Spread 4: Left = Page 7 (6.jpg), Right = Page 8 (7.jpg) [Págs 8-9]
+// Spread 5: Left = Page 9 (8.jpg), Right = Page 10 (9.jpg) [Págs 10-11]
+// Spread 6: Left = Page 11 (10.jpg), Right = Page 12 (11.jpg) [Págs 12-13]
+// Spread 7: Left = Page 13 (12.jpg), Right = Page 14 (Frente Contra Capa) [Págs 14-15]
+// Spread 8: Left = Page 15 (Contra Capa), Right = null -> Closed Back
+
+let currentSpread = 0; // 0 to 8
 let isTurning = false;
 let isZoomed = false;
 let showPrintGrid = false;
@@ -247,20 +258,20 @@ export function initFlipbook() {
 
     if (counterEl) {
       if (currentSpread === 0) {
-        counterEl.textContent = 'Livreto Fechado • Capa Frontal (20×20cm)';
+        counterEl.textContent = 'Livreto Fechado • Capa (Pág. 01)';
       } else if (currentSpread === totalSpreads - 1) {
-        counterEl.textContent = 'Livreto Fechado • Contra Capa (20×20cm)';
+        counterEl.textContent = 'Livreto Fechado • Contra Capa (Pág. 16)';
       } else {
-        const p1 = (currentSpread - 1) * 2 + 2;
-        const p2 = p1 + 1;
-        counterEl.textContent = `Páginas ${p1} - ${p2} de 16 (Spread 20×20cm)`;
+        const leftPageNum = (currentSpread - 1) * 2 + 2;
+        const rightPageNum = leftPageNum + 1;
+        counterEl.textContent = `Páginas ${leftPageNum} - ${rightPageNum} de 16`;
       }
     }
 
     highlightThumb();
   }
 
-  // Thumbnails
+  // Thumbnails List
   if (thumbsList && thumbsList.children.length === 0) {
     bookletPages.forEach((page, idx) => {
       const item = document.createElement('div');
@@ -272,7 +283,7 @@ export function initFlipbook() {
       img.alt = page.title;
 
       const label = document.createElement('span');
-      label.textContent = idx === 0 ? 'Capa' : idx === 15 ? 'Verso' : `${idx}`;
+      label.textContent = idx === 0 ? 'Capa' : idx === 15 ? 'Verso' : `Pág ${idx + 1}`;
 
       item.appendChild(img);
       item.appendChild(label);
