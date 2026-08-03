@@ -563,13 +563,15 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // ==========================================================================
-  // INDIVIDUAL POST CAROUSELS HANDLER
+  // INDIVIDUAL POST CAROUSELS HANDLER (inside iPhone mockup)
   // ==========================================================================
   document.querySelectorAll('[data-post-carousel]').forEach(box => {
     const pid = box.getAttribute('data-post-carousel');
-    const prevBtn = box.querySelector('.prev-card-btn');
-    const nextBtn = box.querySelector('.next-card-btn');
+    // Buttons may be inside ig-post-carousel-viewport (new style)
+    const prevBtn = box.querySelector('.prev-card-btn, .ig-carousel-prev');
+    const nextBtn = box.querySelector('.next-card-btn, .ig-carousel-next');
     const imgs = box.querySelectorAll('.carousel-img');
+    // Dots may be inside ig-carousel-dots or card-dots-row
     const dots = box.querySelectorAll('.card-dot');
     const postImg = document.getElementById(`post-img-${pid}`) as HTMLImageElement;
 
