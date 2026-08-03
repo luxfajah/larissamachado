@@ -6643,117 +6643,154 @@ body.hud-dark .key-cap {
 
 
 /* ==========================================================================
-   POST COPY COLUMN — LAYOUT SEM BARRA DE ROLAGEM
-   Usa flex para distribuir espaço automaticamente entre cards e legenda
+   POST COPY COLUMN — ELEGANT TYPOGRAPHY & COMFORTABLE READABILITY (UI/UX PRO MAX)
    ========================================================================== */
 
 .post-copy-only {
   display: flex !important;
   flex-direction: column !important;
   height: 100% !important;
-  overflow: hidden !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
   justify-content: flex-start !important;
-  gap: 0 !important;
-  padding-right: 0 !important;
+  gap: 12px !important;
+  padding-right: 12px !important;
+  box-sizing: border-box;
 }
 
-/* Section tag e eyebrow mais compactos */
+/* Custom scrollbar for post copy column */
+.post-copy-only::-webkit-scrollbar {
+  width: 6px;
+}
+.post-copy-only::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.04);
+  border-radius: 4px;
+}
+.post-copy-only::-webkit-scrollbar-thumb {
+  background: rgba(110, 75, 58, 0.35);
+  border-radius: 4px;
+}
+.post-copy-only::-webkit-scrollbar-thumb:hover {
+  background: rgba(110, 75, 58, 0.6);
+}
+
+/* Header typography */
 .post-copy-only .section-tag {
   margin-bottom: 2px;
+  font-size: 11px !important;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #6E4B3A;
   flex-shrink: 0;
 }
 
 .post-copy-only .editorial-eyebrow-large {
-  margin: 2px 0 6px 0 !important;
-  font-size: 10.5px !important;
-  line-height: 1.3;
+  margin: 2px 0 10px 0 !important;
+  font-size: 16px !important;
+  font-weight: 700;
+  line-height: 1.35;
+  color: #1A1714;
   flex-shrink: 0;
 }
 
-/* Label dos cards */
+/* Section label for cards */
 .post-copy-only .post-copy-label {
-  margin-top: 8px;
-  margin-bottom: 4px;
-  font-size: 8.5px;
+  margin-top: 4px;
+  margin-bottom: 6px;
+  font-size: 11px !important;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #6E4B3A;
   flex-shrink: 0;
 }
 
-/* Lista de cards: ocupa o espaço disponível, nunca extravasa */
+/* Cards list */
 .post-copy-only .compact-strategy-list {
-  flex: 1 1 0 !important;
-  min-height: 0 !important;
-  overflow: hidden !important;
   display: flex !important;
   flex-direction: column !important;
-  gap: 5px !important;
-  margin-bottom: 10px !important;
+  gap: 10px !important;
+  margin-bottom: 12px !important;
+  flex-shrink: 0;
 }
 
-/* Cada card: ocupa proporção igual no espaço disponível */
+/* Card items */
 .post-copy-only .compact-strategy-list .strategy-card-item {
-  padding: 6px 10px !important;
+  padding: 12px 16px !important;
   margin-bottom: 0 !important;
-  flex: 1 1 0 !important;
-  min-height: 0 !important;
-  overflow: hidden !important;
-  align-items: center !important;
+  background: #FFFFFF !important;
+  border-radius: 12px !important;
+  border: 1px solid rgba(0, 0, 0, 0.07) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03) !important;
+  display: flex !important;
+  gap: 14px !important;
+  align-items: flex-start !important;
+  flex: none !important;
 }
 
 .post-copy-only .compact-strategy-list .strategy-card-num {
-  font-size: 14px !important;
-  min-width: 22px !important;
+  font-size: 16px !important;
+  font-weight: 800 !important;
+  color: #6E4B3A !important;
+  opacity: 0.45 !important;
+  min-width: 24px !important;
   flex-shrink: 0;
+  margin-top: 1px;
 }
 
 .post-copy-only .compact-strategy-list .strategy-card-info {
-  overflow: hidden;
+  flex: 1;
   min-width: 0;
 }
 
 .post-copy-only .compact-strategy-list .strategy-card-info h4 {
-  font-size: 11px !important;
-  margin-bottom: 1px !important;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  font-size: 13.5px !important;
+  font-weight: 700 !important;
+  color: #1A1714 !important;
+  margin-bottom: 4px !important;
+  line-height: 1.35 !important;
+  white-space: normal !important;
 }
 
 .post-copy-only .compact-strategy-list .strategy-card-info p {
-  font-size: 10.5px !important;
-  line-height: 1.4 !important;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+  font-size: 13px !important;
+  line-height: 1.55 !important;
+  color: #3A3530 !important;
+  display: block !important;
+  -webkit-line-clamp: none !important;
+  overflow: visible !important;
+  margin: 0 !important;
 }
 
-/* Bloco da legenda: altura fixa compacta, nunca rola */
+/* Legenda block */
 .post-copy-only .post-legenda-block {
   flex-shrink: 0;
-  margin-top: 0;
-  padding-left: 12px;
-  border-left-width: 2px;
+  margin-top: 4px;
+  padding: 14px 18px !important;
+  background: rgba(110, 75, 58, 0.05) !important;
+  border-left: 4px solid #6E4B3A !important;
+  border-radius: 0 12px 12px 0 !important;
 }
 
 .post-copy-only .post-legenda-label {
-  margin-bottom: 4px;
-  font-size: 8px;
+  margin-bottom: 6px;
+  font-size: 11px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.12em !important;
+  text-transform: uppercase !important;
+  color: #6E4B3A !important;
   flex-shrink: 0;
 }
 
 .post-copy-only .post-legenda-text {
-  font-size: 11px !important;
-  line-height: 1.55 !important;
+  font-size: 13.5px !important;
+  line-height: 1.65 !important;
+  color: #2D2926 !important;
   max-height: none !important;
-  overflow: hidden !important;
-  display: -webkit-box !important;
-  -webkit-line-clamp: 5;
-  -webkit-box-orient: vertical;
+  overflow: visible !important;
+  display: block !important;
+  -webkit-line-clamp: none !important;
   padding-right: 0;
-}
-
-/* Quando não há cards (Post 4 — local), legenda pode ter mais linhas */
-.post-copy-only:not(:has(.compact-strategy-list)) .post-legenda-text {
-  -webkit-line-clamp: 10;
 }
 
