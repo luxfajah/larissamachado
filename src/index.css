@@ -6592,3 +6592,119 @@ body.hud-dark .key-cap {
   overflow-x: hidden;
 }
 
+
+/* ==========================================================================
+   POST COPY COLUMN — LAYOUT SEM BARRA DE ROLAGEM
+   Usa flex para distribuir espaço automaticamente entre cards e legenda
+   ========================================================================== */
+
+.post-copy-only {
+  display: flex !important;
+  flex-direction: column !important;
+  height: 100% !important;
+  overflow: hidden !important;
+  justify-content: flex-start !important;
+  gap: 0 !important;
+  padding-right: 0 !important;
+}
+
+/* Section tag e eyebrow mais compactos */
+.post-copy-only .section-tag {
+  margin-bottom: 2px;
+  flex-shrink: 0;
+}
+
+.post-copy-only .editorial-eyebrow-large {
+  margin: 2px 0 6px 0 !important;
+  font-size: 10.5px !important;
+  line-height: 1.3;
+  flex-shrink: 0;
+}
+
+/* Label dos cards */
+.post-copy-only .post-copy-label {
+  margin-top: 8px;
+  margin-bottom: 4px;
+  font-size: 8.5px;
+  flex-shrink: 0;
+}
+
+/* Lista de cards: ocupa o espaço disponível, nunca extravasa */
+.post-copy-only .compact-strategy-list {
+  flex: 1 1 0 !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 5px !important;
+  margin-bottom: 10px !important;
+}
+
+/* Cada card: ocupa proporção igual no espaço disponível */
+.post-copy-only .compact-strategy-list .strategy-card-item {
+  padding: 6px 10px !important;
+  margin-bottom: 0 !important;
+  flex: 1 1 0 !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+  align-items: center !important;
+}
+
+.post-copy-only .compact-strategy-list .strategy-card-num {
+  font-size: 14px !important;
+  min-width: 22px !important;
+  flex-shrink: 0;
+}
+
+.post-copy-only .compact-strategy-list .strategy-card-info {
+  overflow: hidden;
+  min-width: 0;
+}
+
+.post-copy-only .compact-strategy-list .strategy-card-info h4 {
+  font-size: 11px !important;
+  margin-bottom: 1px !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.post-copy-only .compact-strategy-list .strategy-card-info p {
+  font-size: 10.5px !important;
+  line-height: 1.4 !important;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Bloco da legenda: altura fixa compacta, nunca rola */
+.post-copy-only .post-legenda-block {
+  flex-shrink: 0;
+  margin-top: 0;
+  padding-left: 12px;
+  border-left-width: 2px;
+}
+
+.post-copy-only .post-legenda-label {
+  margin-bottom: 4px;
+  font-size: 8px;
+  flex-shrink: 0;
+}
+
+.post-copy-only .post-legenda-text {
+  font-size: 11px !important;
+  line-height: 1.55 !important;
+  max-height: none !important;
+  overflow: hidden !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  padding-right: 0;
+}
+
+/* Quando não há cards (Post 4 — local), legenda pode ter mais linhas */
+.post-copy-only:not(:has(.compact-strategy-list)) .post-legenda-text {
+  -webkit-line-clamp: 10;
+}
+
