@@ -6338,10 +6338,12 @@ body.hud-dark .key-cap {
   border-radius: 0 3px 3px 0;
 }
 
-/* iPad post hero: portrait, proporção amigável para posts 1:1 e 4:5 */
+/* iPad post hero: proporção exata 1080x1350 (4:5) do Instagram */
 .ipad-post-hero-frame {
-  width: 580px;
-  height: 780px;
+  width: 500px;
+  max-width: 100%;
+  height: 740px;
+  max-height: 92vh;
 }
 
 /* Barra superior do iPad (Face ID slim) */
@@ -6378,13 +6380,13 @@ body.hud-dark .key-cap {
   overflow: hidden;
 }
 
-/* Viewport do carousel: mantém proporção 1:1 da imagem */
+/* Viewport do carousel: mantém proporção exata 1080x1350 (4:5) sem cortar nada */
 .ipad-post-hero-frame .ig-post-carousel-viewport {
   position: relative;
   width: 100%;
-  aspect-ratio: 1 / 1;
-  flex-shrink: 0;
-  background: #F0F0F0;
+  aspect-ratio: 1080 / 1350;
+  flex: 1;
+  background: #FFFFFF;
   overflow: hidden;
 }
 
@@ -6393,7 +6395,8 @@ body.hud-dark .key-cap {
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
+  background: #FFFFFF;
   display: none;
 }
 
