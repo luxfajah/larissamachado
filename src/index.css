@@ -6422,3 +6422,91 @@ body.hud-dark .key-cap {
   grid-template-columns: 62% 1fr !important;
 }
 
+
+/* ==========================================================================
+   COLUNA DIREITA — ESTILO APRESENTAÇÃO (não mais simulação IG)
+   ========================================================================== */
+
+/* Override de layout para o slide de perfil usar o mesmo grid dos posts */
+.profile-slide-override {
+  grid-template-columns: 62% 1fr !important;
+  gap: 40px !important;
+  padding: 28px 48px !important;
+}
+
+/* Bloco de legenda no estilo editorial da apresentação */
+.post-legenda-block {
+  margin-top: 4px;
+  border-left: 3px solid var(--color-primary, #6E4B3A);
+  padding-left: 16px;
+}
+
+.post-legenda-label {
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-primary, #6E4B3A);
+  margin-bottom: 8px;
+  opacity: 0.85;
+}
+
+.post-legenda-text {
+  font-size: 13px;
+  line-height: 1.7;
+  color: #3a3530;
+  max-height: 220px;
+  overflow-y: auto;
+  padding-right: 6px;
+}
+
+.post-legenda-text em {
+  color: #6E4B3A;
+  font-style: italic;
+}
+
+.post-legenda-text strong {
+  color: #1a1714;
+}
+
+/* Strategy cards compactos (reutilizados dos posts) */
+.compact-strategy-list .strategy-card-item {
+  padding: 10px 12px;
+  margin-bottom: 7px;
+  background: rgba(255,255,255,0.6);
+  border-radius: 10px;
+  border: 1px solid rgba(0,0,0,0.07);
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.compact-strategy-list .strategy-card-num {
+  font-size: 18px;
+  font-weight: 900;
+  color: rgba(110,75,58,0.2);
+  line-height: 1;
+  min-width: 28px;
+  flex-shrink: 0;
+}
+
+.compact-strategy-list .strategy-card-info h4 {
+  font-size: 12px;
+  font-weight: 700;
+  color: #1a1714;
+  margin: 0 0 3px 0;
+}
+
+.compact-strategy-list .strategy-card-info p {
+  font-size: 11.5px;
+  color: #5a5550;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* post-copy-only scrollable */
+.post-copy-only {
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
