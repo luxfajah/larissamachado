@@ -458,6 +458,331 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  // ==========================================================================
+  // INSTAGRAM STORIES FULLSCREEN MODAL INTERACTION
+  // ==========================================================================
+  const storiesModal = document.getElementById('instagram-stories-modal');
+  const btnCloseStories = document.getElementById('btn-close-stories');
+  const storyProgressRow = document.getElementById('story-progress-row');
+  const storySlideContent = document.getElementById('story-slide-content');
+  const storyTapLeft = document.getElementById('story-tap-left');
+  const storyTapRight = document.getElementById('story-tap-right');
+
+  const storiesData = {
+    '1': {
+      title: 'Comece aqui',
+      slides: [
+        {
+          tag: 'BOAS-VINDAS',
+          heading: 'Oi! Sou a Dra. Larissa Machado',
+          text: 'Oftalmologista especialista em Plástica Ocular em Atibaia/SP. Seja muito bem-vindo(a) ao meu perfil!',
+          bg: './fotos-ilustrativas/6.jpg',
+          cta: 'Conheça minha filosofia ➔'
+        },
+        {
+          tag: 'ESPECIALIDADE',
+          heading: 'O que é Plástica Ocular?',
+          text: 'Uma especialidade médica que une saúde, função e estética palpebral. O objetivo é renovar o olhar preservando a sua essência natural.',
+          bg: './fotos-ilustrativas/persona.jpg',
+          cta: 'Ver procedimentos ➔'
+        },
+        {
+          tag: 'CUIDADO INDIVIDUALIZADO',
+          heading: 'Rejuvenescer sem exageros',
+          text: 'Não prometemos milagres nem transformações artificiais. Tratamos ptose, blefaroplastia e patologias com rigor cirúrgico.',
+          bg: './fotos-ilustrativas/3.jpg',
+          cta: 'Agendar Consulta ➔'
+        }
+      ]
+    },
+    '2': {
+      title: 'Onde atendo',
+      slides: [
+        {
+          tag: 'LOCALIZAÇÃO',
+          heading: 'Consultório em Atibaia / SP',
+          text: 'Atendimento presencial personalizado em espaço moderno, acolhedor e com total infraestrutura para sua avaliação ocular.',
+          bg: './fotos-ilustrativas/2.jpg',
+          cta: 'Ver endereço no Google Maps ➔'
+        },
+        {
+          tag: 'EXPERIÊNCIA',
+          heading: 'Avaliação Funcional & Estética',
+          text: 'Cada consulta é um momento de escuta atenta para entender o que mudou no seu olhar antes de indicar qualquer procedimento.',
+          bg: './fotos-ilustrativas/5.jpg',
+          cta: 'Falar com a equipe ➔'
+        },
+        {
+          tag: 'AGENDAMENTO',
+          heading: 'Horários & Consultas',
+          text: 'Para agendar sua consulta, clique no link da bio ou envie uma mensagem direta no WhatsApp. Será um prazer receber você!',
+          bg: './fotos-ilustrativas/persona.jpg',
+          cta: 'Enviar Mensagem no WhatsApp ➔'
+        }
+      ]
+    }
+  };
+
+  let activeStoryKey: '1' | '2' = '1';
+  let activeStorySlideIdx = 0;
+  let storyTimer: any = null;
+
+  function renderStorySlide(storyKey: '1' | '2', slideIdx: number) {
+    const story = storiesData[storyKey];
+    if (!story || !story.slides[slideIdx]) return;
+    const slide = story.slides[slideIdx];
+
+    // Render Progress Bars
+    if (storyProgressRow) {
+      storyProgressRow.innerHTML = story.slides.map((_, idx) => `
+        <div class="story-prog-bar">
+          <div class="story-prog-fill" style="width: ${idx <= slideIdx ? '100%' : '0%'};"></div>
+        </div>
+      `).join('');
+    }
+
+    // Render Canvas Content
+    if (storySlideContent) {
+      storySlideContent.style.backgroundImage = `linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(28,38,43,0.85) 100%), url('${slide.bg}')`;
+      storySlideContent.innerHTML = `
+        <div>
+          <span class="story-title-tag">${slide.tag}</span>
+          <h3 class="story-heading">${slide.heading}</h3>
+        </div>
+        <div class="story-text">${slide.text}</div>
+        <div class="story-sticker-cta">${slide.cta}</div>
+      `;
+    }
+
+    // Auto Advance after 5 seconds
+    clearTimeout(storyTimer);
+    storyTimer = setTimeout(() => {
+      if (slideIdx < story.slides.length - 1) {
+        activeStorySlideIdx++;
+        renderStorySlide(storyKey, activeStorySlideIdx);
+      } else {
+        closeStoriesModal();
+      }
+    }, 5000);
+  }
+
+  function openStoriesModal(storyKey: '1' | '2') {
+    activeStoryKey = storyKey;
+    activeStorySlideIdx = 0;
+    if (storiesModal) {
+      storiesModal.classList.add('active');
+      renderStorySlide(activeStoryKey, activeStorySlideIdx);
+    }
+  }
+
+  function closeStoriesModal() {
+    clearTimeout(storyTimer);
+    if (storiesModal) {
+      storiesModal.classList.remove('active');
+    }
+  }
+
+  // Story Trigger Click Handlers (Highlights on iPhone & Strategy Buttons)
+  document.querySelectorAll('[data-story]').forEach(el => {
+    el.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const storyVal = el.getAttribute('data-story');
+      if (storyVal === '1' || storyVal === '2') {
+        openStoriesModal(storyVal);
+      }
+    });
+  });
+
+  btnCloseStories?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    closeStoriesModal();
+  });
+
+  storyTapLeft?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (activeStorySlideIdx > 0) {
+      activeStorySlideIdx--;
+      renderStorySlide(activeStoryKey, activeStorySlideIdx);
+    }
+  });
+
+  storyTapRight?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const story = storiesData[activeStoryKey];
+    if (story && activeStorySlideIdx < story.slides.length - 1) {
+      activeStorySlideIdx++;
+      renderStorySlide(activeStoryKey, activeStorySlideIdx);
+    } else {
+      closeStoriesModal();
+    }
+  });
+
+  // ==========================================================================
+  // FEED & 6 POSTS INTERACTIVE VIEWER LOGIC (SLIDE 2)
+  // ==========================================================================
+  const postsData = [
+    {
+      category: 'CONTEÚDO 1 [PREPARAÇÃO DA AUDIÊNCIA]',
+      badgeTag: 'Preparação',
+      title: '“Você parece cansado?”',
+      cards: [
+        'Card 1: Quantas vezes você já ouviu “você parece cansado” num dia em que, teoricamente, estava tudo bem?',
+        'Card 2: Talvez, você relacione isso ao sono (e, em alguns momentos, pode até que seja mesmo). Mas há um outro ponto interessante para olharmos: quando a pálpebra superior perde firmeza, ela lança uma sombra discreta sobre o olho e muda a expressão que o seu rosto transmite. O olhar fica pesado, sério, abatido, mesmo que você não esteja dessa forma...',
+        'Card 3: Dar nome a isso é importante para saber qual é o melhor caminho a seguir, ou seja, não é você que está sempre cansado, é a estrutura da pálpebra que se transformou com o tempo. E entender o que acontece vem sempre antes de decidir se (e quando) algo precisa ser feito.',
+        'Card 4: Você reconhece isso no seu olhar?'
+      ],
+      caption: `<p>A gente aprende a culpar o cansaço por tudo o que aparece no rosto, mas nem sempre ele é o culpado. Com o tempo, a pálpebra superior perde firmeza e passa a projetar uma sombra discreta sobre o olho e é essa sombra que muda a mensagem que o seu rosto transmite. O olhar comunica cansaço, seriedade, abatimento, mesmo quando por dentro é o oposto...</p><p>Por isso, aqui no consultório, a ordem é sempre essa: entender primeiro o que te trouxe até aqui e decidir depois a melhor intervenção.</p><p><strong>Dra. Larissa · Oftalmologia · Plástica Ocular · CRM 197872-SP</strong></p>`
+    },
+    {
+      category: 'CONTEÚDO 2 [EDUCACIONAL]',
+      badgeTag: 'Educacional',
+      title: 'Perguntas no Consultório',
+      cards: [
+        'Card 1: As perguntas que você faria se estivesse sentada no consultório (e o que eu te responderia)',
+        'Card 2: <strong>"Dói?"</strong> Durante, não: a cirurgia é feita com anestesia local e sedação, você não sente dor. Depois, há um desconforto leve e inchaço nos primeiros dias, controlados com o que a gente orienta. Nada que costume tirar o sono... ok?',
+        'Card 3: <strong>"Preciso de anestesia geral?"</strong> Na maioria dos casos, não. A blefaroplastia costuma ser feita com anestesia local e uma sedação leve. Você vai para casa no mesmo dia.',
+        'Card 4: <strong>"Vou ficar com aparência artificial?"</strong> Esse é o medo mais comum e eu entendo. O objetivo nunca é mudar o seu rosto, é aliviar o peso da pálpebra preservando a sua expressão. Ou seja, a renovação do olhar com a sua identidade!',
+        'Card 5: <strong>"Quanto tempo até voltar à rotina?"</strong> A maior parte das pessoas retoma atividades leves em poucos dias. O inchaço e os hematomas melhoram ao longo das primeiras uma a duas semanas. Eu explico o passo a passo antes, para você se planejar sem surpresas.',
+        'Card 6: <strong>"Como sei se é o meu caso?"</strong> Só a avaliação responde isso. Nem todo incômodo precisa de cirurgia, às vezes é função, às vezes é estética, às vezes é só entender o que mudou. O primeiro passo é sempre olhar com calma. Por isso, a consulta é fundamental para o melhor direcionamento.'
+      ],
+      caption: `<p>Toda semana, as mesmas perguntas aparecem no consultório. E faz todo sentido: ninguém decide nada sobre os próprios olhos sem antes tirar o medo do caminho.</p><p>Então, reuni aqui as dúvidas que mais escuto. Respondi cada uma como respondo pessoalmente: com a informação que você precisa para pensar com clareza.</p><p>Você vai reparar que não tem "resultado garantido" nem "transformação". Tem explicação. Porque a decisão é sua... O meu papel é fazer você entender antes de decidir.</p><p>Ficou alguma pergunta de fora? Pode me mandar que eu respondo.</p><p><strong>Dra. Larissa · Oftalmologia · Plástica Ocular · CRM 197872-SP</strong></p>`
+    },
+    {
+      category: 'CONTEÚDO 3 [EDUCACIONAL]',
+      badgeTag: 'Educacional',
+      title: '“E a cicatriz?”',
+      cards: [
+        'Card 1: “E a cicatriz?” é quase sempre a primeira pergunta. Faz todo sentido: ninguém quer trocar um incômodo por uma marca...',
+        'Card 2: Na blefaroplastia da pálpebra superior, a incisão é planejada dentro da dobra natural da pálpebra. Com o olho aberto, essa dobra se esconde e a cicatriz se esconde com ela. Ou seja, meu trabalho sempre busca respeitar a anatomia do seu rosto, com muita técnica.',
+        'Card 3: Não existe cirurgia sem cicatriz, e eu não vou dizer o contrário. O que existe é uma marca planejada. Qual outro medo te trava na hora de pensar no assunto? Pode perguntar.'
+      ],
+      caption: `<p>Essa é uma pergunta clássica que merece um espaço só dela. Passa para o lado e confira os cards acima!</p><p><strong>Dra. Larissa · Oftalmologia · Plástica Ocular · CRM 197872-SP</strong></p>`
+    },
+    {
+      category: 'CONTEÚDO 4 [LOCAL DE ATENDIMENTO]',
+      badgeTag: 'Localização',
+      title: 'Local de Atendimento',
+      cards: [
+        'Card 1: Meu local de atendimento: <br><br><a href="https://share.google/9v6BVUdKtrHndWnxr" target="_blank" style="color:#00376B; font-weight:bold;">share.google/9v6BVUdKtrHndWnxr</a>'
+      ],
+      caption: `<p>Este é o meu local de atendimento atualmente.</p><p>Para agendamento de consultas, clique diretamente no link da bio.</p><p><strong>Dra. Larissa · Oftalmologia · Plástica Ocular · CRM 197872-SP</strong></p>`
+    },
+    {
+      category: 'CONTEÚDO 5 [APRESENTAÇÃO PROFISSIONAL]',
+      badgeTag: 'Institucional',
+      title: 'Seja Bem-Vindo(a)',
+      cards: [
+        'Card 1: Talvez você não tenha chegado aqui procurando uma cirurgia. E tudo bem, eu também não começo por ela. Sou a Dra. Larissa, oftalmologista especialista em Plástica Ocular. Meu trabalho é entender por que o seu olhar mudou antes de falar em qualquer procedimento.',
+        'Card 2: Às vezes, o que incomoda é função: a pálpebra que pesa, o campo de visão que diminui. Às vezes, é a sensação de que o rosto parou de mostrar como você se sente. Quase sempre, as duas coisas caminhando juntas.',
+        'Card 3: O que eu não faço: prometer juventude, vender cirurgia ou transformar você em outra pessoa. O objetivo nunca é mudar quem você é, mas fazer o seu olhar voltar a te representar, quando isso fizer sentido.',
+        'Card 4: Se você chegou até aqui, seja bem-vindo(a).'
+      ],
+      caption: `<p>Seja oficialmente bem-vindo por aqui. Meu objetivo nesta página é trazer informação embasada para você que tem interesse na temática.</p><p>Qualquer dúvida, por favor, meu direct está aberto para conversarmos.</p><p><strong>Dra. Larissa · Oftalmologia · Plástica Ocular · CRM 197872-SP</strong></p>`
+    },
+    {
+      category: 'CONTEÚDO 6 [EDUCACIONAL SOBRE PLÁSTICA OCULAR]',
+      badgeTag: 'Patologias',
+      title: 'Saúde & Função Ocular',
+      cards: [
+        'Card Único: A plástica ocular não é só estética, ela também pode tratar doenças que afetam a sua saúde ocular. Três delas aparecem com frequência no consultório: Ptose, Tumores Palpebrais e Obstrução das Vias Lacrimais.'
+      ],
+      caption: `<p>Muita gente associa cirurgia de pálpebra a rejuvenescimento, mas a plástica ocular também trata condições que afetam a saúde e o funcionamento dos seus olhos.</p><p><strong>Ptose:</strong> é a queda da pálpebra superior. Com o tempo, ou por questões congênitas e neurológicas, o músculo que sustenta a pálpebra enfraquece, e ela passa a cobrir parte do olho. O incômodo raramente é só estético: a ptose reduz o campo de visão, obriga você a levantar a sobrancelha o dia inteiro para enxergar e cansa. A cirurgia reposiciona a pálpebra na altura certa, devolvendo abertura ao olhar e conforto à visão.</p><p><strong>Tumores palpebrais:</strong> nem toda "verruguinha" ou nódulo na pálpebra é inofensivo. Existem lesões benignas, mas também tumores que precisam de atenção, inclusive alguns tipos de câncer de pele, que são comuns nessa região por causa da exposição solar. A plástica ocular cuida da remoção da lesão e da reconstrução da pálpebra, preservando tanto a função (proteção do olho) quanto a estética. Avaliar cedo faz toda a diferença.</p><p><strong>Obstrução das vias lacrimais:</strong> quando o canal que drena a lágrima entope, ela não tem para onde ir. O resultado é o olho lacrimejando o tempo todo, secreção e infecções que voltam sempre. Não é frescura nem "olho sensível": é um problema de drenagem com solução cirúrgica, que reconstrói o caminho da lágrima e resolve o incômodo de vez.</p><p>Se você se reconheceu em algum desses sinais, o primeiro passo é entender o que está acontecendo.</p><p><strong>Dra. Larissa · Oftalmologia · Plástica Ocular · CRM 197872-SP</strong></p>`
+    }
+  ];
+
+  let currentActivePostIdx = 0;
+  let currentCardIdx = 0;
+
+  const pvCatBadge = document.getElementById('pv-cat-badge');
+  const pvCardCounter = document.getElementById('pv-card-counter');
+  const pvCardText = document.getElementById('pv-card-text');
+  const pvCaptionText = document.getElementById('pv-caption-text');
+  const pvDotsRow = document.getElementById('pv-dots-row');
+  const pvBtnPrevCard = document.getElementById('pv-btn-prev-card');
+  const pvBtnNextCard = document.getElementById('pv-btn-next-card');
+
+  function renderPostViewer(postIdx: number, cardIdx: number) {
+    const post = postsData[postIdx];
+    if (!post) return;
+
+    // Update Header Badges
+    if (pvCatBadge) pvCatBadge.textContent = post.category;
+    if (pvCardCounter) pvCardCounter.textContent = `Card ${cardIdx + 1} de ${post.cards.length}`;
+
+    // Update Card Content
+    if (pvCardText) pvCardText.innerHTML = post.cards[cardIdx] || '';
+
+    // Update Caption Text
+    if (pvCaptionText) pvCaptionText.innerHTML = post.caption;
+
+    // Update Dots Indicator
+    if (pvDotsRow) {
+      pvDotsRow.innerHTML = post.cards.map((_, idx) => `
+        <div class="card-dot ${idx === cardIdx ? 'active' : ''}"></div>
+      `).join('');
+    }
+
+    // Disable/Enable Nav Arrows
+    if (pvBtnPrevCard) {
+      if (cardIdx === 0) {
+        pvBtnPrevCard.style.opacity = '0.3';
+        pvBtnPrevCard.style.pointerEvents = 'none';
+      } else {
+        pvBtnPrevCard.style.opacity = '1';
+        pvBtnPrevCard.style.pointerEvents = 'auto';
+      }
+    }
+
+    if (pvBtnNextCard) {
+      if (cardIdx === post.cards.length - 1) {
+        pvBtnNextCard.style.opacity = '0.3';
+        pvBtnNextCard.style.pointerEvents = 'none';
+      } else {
+        pvBtnNextCard.style.opacity = '1';
+        pvBtnNextCard.style.pointerEvents = 'auto';
+      }
+    }
+  }
+
+  // Feed Tile Click Handlers
+  const postTiles = document.querySelectorAll('.feed-post-tile');
+  postTiles.forEach(tile => {
+    tile.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const idxStr = tile.getAttribute('data-post-idx');
+      if (idxStr !== null) {
+        currentActivePostIdx = parseInt(idxStr, 10);
+        currentCardIdx = 0;
+        
+        postTiles.forEach(t => t.classList.remove('active'));
+        tile.classList.add('active');
+
+        renderPostViewer(currentActivePostIdx, currentCardIdx);
+      }
+    });
+  });
+
+  // Card Navigation Arrows
+  pvBtnPrevCard?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (currentCardIdx > 0) {
+      currentCardIdx--;
+      renderPostViewer(currentActivePostIdx, currentCardIdx);
+    }
+  });
+
+  pvBtnNextCard?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const post = postsData[currentActivePostIdx];
+    if (post && currentCardIdx < post.cards.length - 1) {
+      currentCardIdx++;
+      renderPostViewer(currentActivePostIdx, currentCardIdx);
+    }
+  });
+
+  // Initial Post Render
+  renderPostViewer(0, 0);
+
   // Setup scaling resize event
   window.addEventListener('resize', handleResize);
   

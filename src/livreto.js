@@ -1,5 +1,5 @@
 // ==========================================================================
-// REALISTIC 3D VIRTUAL FLIPBOOK ENGINE (EXACT GABARITO PAGINATION MATCH)
+// REALISTIC 3D VIRTUAL FLIPBOOK ENGINE (STPAGEFLIP / ISSUU / FLIPPINGBOOK SPEC)
 // ==========================================================================
 
 export const bookletPages = [
@@ -131,7 +131,7 @@ export function initFlipbook() {
     return side === 'left' ? bookletPages[leftIdx] : bookletPages[rightIdx];
   }
 
-  // Realistic 3D Turn Next (Flipping Right Page to Left)
+  // Realistic 3D Paper Curl Turn Next (Flipping Right Page to Left)
   function turnNext() {
     if (isTurning || currentSpread >= totalSpreads - 1) return;
     isTurning = true;
@@ -141,19 +141,51 @@ export function initFlipbook() {
 
     const nextSpread = currentSpread + 1;
 
-    // 1. Immediately update the stationary right base page underneath to show the NEXT right page
-    const rightBaseImg = book.querySelector('.base-leaf.right-leaf img');
-    const nextRightPage = getPageForSpread(nextSpread, 'right');
-    if (rightBaseImg && nextRightPage) {
-      rightBaseImg.src = nextRightPage.src;
-    } else if (rightBaseImg && !nextRightPage) {
-      const rightBase = book.querySelector('.base-leaf.right-leaf');
-      if (rightBase) rightBase.style.opacity = '0';
+    // 1. Prepare base layer underneath:
+    // Left base retains current left page.
+    // Right base immediately displays the NEXT right page (R2).
+    if (currentSpread === 0) {
+      book.classList.remove('is-closed-front');
+      book.innerHTML = '';
+
+      const leftBase = document.createElement('div');
+      leftBase.className = 'page-leaf base-leaf left-leaf';
+      const leftImg = getPageForSpread(1, 'left');
+      if (leftImg) {
+        const img = document.createElement('img');
+        img.src = leftImg.src;
+        leftBase.appendChild(img);
+      }
+
+      const rightBase = document.createElement('div');
+      rightBase.className = 'page-leaf base-leaf right-leaf';
+      const rightImg = getPageForSpread(1, 'right');
+      if (rightImg) {
+        const img = document.createElement('img');
+        img.src = rightImg.src;
+        rightBase.appendChild(img);
+      }
+
+      const spine = document.createElement('div');
+      spine.className = 'book-3d-spine';
+
+      book.appendChild(leftBase);
+      book.appendChild(spine);
+      book.appendChild(rightBase);
+    } else {
+      const rightBaseImg = book.querySelector('.base-leaf.right-leaf img');
+      const nextRightPage = getPageForSpread(nextSpread, 'right');
+      if (rightBaseImg && nextRightPage) {
+        rightBaseImg.src = nextRightPage.src;
+      } else if (rightBaseImg && !nextRightPage) {
+        const rightBase = book.querySelector('.base-leaf.right-leaf');
+        if (rightBase) rightBase.style.opacity = '0';
+      }
     }
 
-    // 2. Create the turning leaf
+    // 2. Create turning leaf with 4-layer paper curl physics
     const turnLeaf = document.createElement('div');
-    turnLeaf.className = 'page-leaf turning-leaf turn-forward';
+    turnLeaf.className = 'page-leaf turning-leaf turn-forward-curl';
 
     // Front face = Current Right Page (R1)
     const frontFace = document.createElement('div');
@@ -178,27 +210,19 @@ export function initFlipbook() {
     const shadow = document.createElement('div');
     shadow.className = 'turning-leaf-shadow';
 
-    turnLeaf.appendChild(frontFace);
     turnLeaf.appendChild(backFace);
+    turnLeaf.appendChild(frontFace);
     turnLeaf.appendChild(shadow);
     book.appendChild(turnLeaf);
-
-    // 3. Animate 3D rotation from 0deg to -180deg
-    requestAnimationFrame(() => {
-      turnLeaf.style.transform = 'rotateY(-180deg) scale(0.98)';
-      setTimeout(() => {
-        turnLeaf.style.transform = 'rotateY(-180deg) scale(1)';
-      }, 300);
-    });
 
     setTimeout(() => {
       currentSpread = nextSpread;
       renderBook();
       isTurning = false;
-    }, 600);
+    }, 650);
   }
 
-  // Realistic 3D Turn Prev (Flipping Left Page to Right)
+  // Realistic 3D Paper Curl Turn Prev (Flipping Left Page to Right)
   function turnPrev() {
     if (isTurning || currentSpread <= 0) return;
     isTurning = true;
@@ -208,20 +232,23 @@ export function initFlipbook() {
 
     const prevSpread = currentSpread - 1;
 
-    // 1. Immediately update the stationary left base page underneath to show the PREVIOUS left page
-    const leftBaseImg = book.querySelector('.base-leaf.left-leaf img');
-    const prevLeftPage = getPageForSpread(prevSpread, 'left');
-    if (leftBaseImg && prevLeftPage) {
-      leftBaseImg.src = prevLeftPage.src;
-    } else if (leftBaseImg && !prevLeftPage) {
-      const leftBase = book.querySelector('.base-leaf.left-leaf');
-      if (leftBase) leftBase.style.opacity = '0';
+    // 1. Prepare base layer underneath:
+    // Right base retains current right page.
+    // Left base immediately displays the PREVIOUS left page (L1).
+    if (prevSpread === 0) {
+      const rightBaseImg = book.querySelector('.base-leaf.right-leaf img');
+      if (rightBaseImg) rightBaseImg.src = '';
+    } else {
+      const leftBaseImg = book.querySelector('.base-leaf.left-leaf img');
+      const prevLeftPage = getPageForSpread(prevSpread, 'left');
+      if (leftBaseImg && prevLeftPage) {
+        leftBaseImg.src = prevLeftPage.src;
+      }
     }
 
-    // 2. Create turning leaf starting at -180deg
+    // 2. Create turning leaf with 4-layer paper curl physics starting at -180deg
     const turnLeaf = document.createElement('div');
-    turnLeaf.className = 'page-leaf turning-leaf turn-backward';
-    turnLeaf.style.transform = 'rotateY(-180deg)';
+    turnLeaf.className = 'page-leaf turning-leaf turn-backward-curl';
 
     // Back face (facing user at -180deg on the left) = Current Left Page (L2)
     const backFace = document.createElement('div');
@@ -236,7 +263,7 @@ export function initFlipbook() {
     // Front face (turning to face user at 0deg on the right) = Previous Right Page (R1)
     const frontFace = document.createElement('div');
     frontFace.className = 'leaf-face leaf-front';
-    const frontImg = getPageForSpread(prevSpread, 'right') || bookletPages[0];
+    const frontImg = prevSpread === 0 ? bookletPages[0] : getPageForSpread(prevSpread, 'right');
     if (frontImg) {
       const img = document.createElement('img');
       img.src = frontImg.src;
@@ -246,24 +273,16 @@ export function initFlipbook() {
     const shadow = document.createElement('div');
     shadow.className = 'turning-leaf-shadow';
 
-    turnLeaf.appendChild(frontFace);
     turnLeaf.appendChild(backFace);
+    turnLeaf.appendChild(frontFace);
     turnLeaf.appendChild(shadow);
     book.appendChild(turnLeaf);
-
-    // 3. Animate 3D rotation from -180deg to 0deg
-    requestAnimationFrame(() => {
-      turnLeaf.style.transform = 'rotateY(0deg) scale(0.98)';
-      setTimeout(() => {
-        turnLeaf.style.transform = 'rotateY(0deg) scale(1)';
-      }, 300);
-    });
 
     setTimeout(() => {
       currentSpread = prevSpread;
       renderBook();
       isTurning = false;
-    }, 600);
+    }, 650);
   }
 
   function goToSpread(targetSpread) {
