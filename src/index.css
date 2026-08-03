@@ -6294,3 +6294,131 @@ body.hud-dark .key-cap {
   display: none;
 }
 
+
+/* ==========================================================================
+   IPAD MOCKUP — posts individuais (proporção real dos posts IG)
+   ========================================================================== */
+
+.ipad-mockup-frame {
+  background: #1C1C1E;
+  border-radius: 28px;
+  border: 12px solid #1C1C1E;
+  box-shadow:
+    0 0 0 1.5px rgba(255,255,255,0.12),
+    0 50px 100px rgba(0,0,0,0.40),
+    0 20px 40px rgba(0,0,0,0.25);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Botão lateral (volume) via pseudo-elemento */
+.ipad-mockup-frame::before {
+  content: '';
+  position: absolute;
+  left: -14px;
+  top: 110px;
+  width: 4px;
+  height: 44px;
+  background: #2c2c2e;
+  border-radius: 3px 0 0 3px;
+  box-shadow: 0 54px 0 #2c2c2e, 0 -54px 0 #2c2c2e;
+}
+
+/* Botão power lateral direito */
+.ipad-mockup-frame::after {
+  content: '';
+  position: absolute;
+  right: -14px;
+  top: 130px;
+  width: 4px;
+  height: 52px;
+  background: #2c2c2e;
+  border-radius: 0 3px 3px 0;
+}
+
+/* iPad post hero: portrait, proporção amigável para posts 1:1 e 4:5 */
+.ipad-post-hero-frame {
+  width: 580px;
+  height: 780px;
+}
+
+/* Barra superior do iPad (Face ID slim) */
+.ipad-top-bar {
+  background: #1C1C1E;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 18px;
+  flex-shrink: 0;
+}
+
+.ipad-time {
+  color: rgba(255,255,255,0.85);
+  font-size: 11px;
+  font-weight: 600;
+  font-family: -apple-system, 'SF Pro Display', sans-serif;
+}
+
+.ipad-faceid-pill {
+  width: 80px;
+  height: 6px;
+  background: #3a3a3c;
+  border-radius: 4px;
+}
+
+/* Tela interna do iPad — branca como o app */
+.ipad-post-hero-frame .ig-post-view {
+  background: #fff;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Viewport do carousel: mantém proporção 1:1 da imagem */
+.ipad-post-hero-frame .ig-post-carousel-viewport {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  flex-shrink: 0;
+  background: #F0F0F0;
+  overflow: hidden;
+}
+
+.ipad-post-hero-frame .ig-post-carousel-viewport .carousel-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: none;
+}
+
+.ipad-post-hero-frame .ig-post-carousel-viewport .carousel-img.active {
+  display: block;
+}
+
+/* Setas maiores no iPad */
+.ipad-post-hero-frame .ig-carousel-prev,
+.ipad-post-hero-frame .ig-carousel-next {
+  width: 38px;
+  height: 38px;
+}
+
+/* Status icons à direita do top bar */
+.ipad-status-icons {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  color: rgba(255,255,255,0.8);
+  font-size: 10px;
+}
+
+/* Ajuste do grid para iPad (ligeiramente mais largo que iPhone) */
+.post-slide-layout {
+  grid-template-columns: 62% 1fr !important;
+}
+
