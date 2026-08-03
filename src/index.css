@@ -6510,3 +6510,74 @@ body.hud-dark .key-cap {
   padding-right: 4px;
 }
 
+
+/* ==========================================================================
+   IPAD STATUS BAR (topo) + HOME INDICATOR (bottom floating)
+   ========================================================================== */
+
+.ipad-status-bar {
+  background: #000;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  flex-shrink: 0;
+  border-radius: 0; /* sharp inside frame */
+}
+
+.ipad-time {
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: -apple-system, 'SF Pro Display', sans-serif;
+  letter-spacing: -0.3px;
+}
+
+.ipad-status-icons {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Home indicator — flutua na base branca do conteúdo */
+.ipad-home-indicator {
+  background: #fff;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.ipad-home-pill {
+  width: 120px;
+  height: 5px;
+  background: #1a1a1a;
+  border-radius: 3px;
+  opacity: 0.18;
+}
+
+/* FUNDO BRANCO na área de conteúdo do mockup */
+.ipad-post-hero-frame .ig-post-view {
+  background: #fff !important;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Remove o antigo top bar se sobrar */
+.ipad-top-bar { display: none !important; }
+
+/* Label de seção na coluna da copy */
+.post-copy-label {
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(110,75,58,0.7);
+  margin-bottom: 6px;
+  margin-top: 12px;
+}
+
