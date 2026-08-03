@@ -467,6 +467,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const storySlideContent = document.getElementById('story-slide-content');
   const storyTapLeft = document.getElementById('story-tap-left');
   const storyTapRight = document.getElementById('story-tap-right');
+  const storyBtnPrev = document.getElementById('story-btn-prev');
+  const storyBtnNext = document.getElementById('story-btn-next');
 
   const storiesData: Record<string, string[]> = {
     '1': [
@@ -482,7 +484,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let activeStoryKey: '1' | '2' = '1';
   let activeStorySlideIdx = 0;
-  let storyTimer: any = null;
 
   function renderStorySlide(storyKey: '1' | '2', slideIdx: number) {
     const storyImgs = storiesData[storyKey];
@@ -500,16 +501,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (storySlideContent) {
       storySlideContent.innerHTML = `<img src="${imgUrl}" alt="Story" style="width:100%; height:100%; object-fit:contain; border-radius:12px;">`;
     }
-
-    clearTimeout(storyTimer);
-    storyTimer = setTimeout(() => {
-      if (slideIdx < storyImgs.length - 1) {
-        activeStorySlideIdx++;
-        renderStorySlide(storyKey, activeStorySlideIdx);
-      } else {
-        closeStoriesModal();
-      }
-    }, 5000);
   }
 
   function openStoriesModal(storyKey: '1' | '2') {
@@ -522,7 +513,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function closeStoriesModal() {
-    clearTimeout(storyTimer);
     if (storiesModal) {
       storiesModal.classList.remove('active');
     }
@@ -543,16 +533,14 @@ document.addEventListener('DOMContentLoaded', () => {
     closeStoriesModal();
   });
 
-  storyTapLeft?.addEventListener('click', (e) => {
-    e.stopPropagation();
+  function prevStorySlide() {
     if (activeStorySlideIdx > 0) {
       activeStorySlideIdx--;
       renderStorySlide(activeStoryKey, activeStorySlideIdx);
     }
-  });
+  }
 
-  storyTapRight?.addEventListener('click', (e) => {
-    e.stopPropagation();
+  function nextStorySlide() {
     const storyImgs = storiesData[activeStoryKey];
     if (storyImgs && activeStorySlideIdx < storyImgs.length - 1) {
       activeStorySlideIdx++;
@@ -560,6 +548,26 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
       closeStoriesModal();
     }
+  }
+
+  storyTapLeft?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    prevStorySlide();
+  });
+
+  storyTapRight?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    nextStorySlide();
+  });
+
+  storyBtnPrev?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    prevStorySlide();
+  });
+
+  storyBtnNext?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    nextStorySlide();
   });
 
   // ==========================================================================
